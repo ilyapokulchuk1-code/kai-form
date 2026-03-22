@@ -5,373 +5,494 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KAI Production — Заявка</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Unbounded:wght@300;400;700;900&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;700&display=swap" rel="stylesheet">
 <style>
-  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
 :root {
-–bg: #0d0d0d;
-–bg2: #141414;
-–blue: #1a6cf5;
-–blue-bright: #3d85ff;
-–blue-glow: rgba(26,108,245,0.35);
-–white: #ffffff;
-–gray: #9a9a9a;
-–border: rgba(255,255,255,0.07);
-–border-blue: rgba(26,108,245,0.4);
+–bg: #080808;
+–card: #0f0f0f;
+–white: #f0ece4;
+–muted: #6b6560;
+–accent: #1a6cf5;
+–accent2: #e8c96d;
+–border: rgba(240,236,228,0.08);
 }
 
 body {
 background: var(–bg);
-font-family: ‘Manrope’, sans-serif;
+font-family: ‘Montserrat’, sans-serif;
 min-height: 100vh;
-display: flex;
-align-items: center;
-justify-content: center;
-padding: 32px 16px;
+color: var(–white);
 position: relative;
 overflow-x: hidden;
 }
 
+/* Film grain overlay */
 body::before {
 content: ‘’;
 position: fixed;
-top: -100px; left: -100px;
-width: 500px; height: 500px;
-background: radial-gradient(circle, rgba(26,108,245,0.12) 0%, transparent 65%);
+top: -200px; left: 50%;
+transform: translateX(-50%);
+width: 600px; height: 400px;
+background: radial-gradient(ellipse, rgba(26,108,245,0.07) 0%, transparent 70%);
 pointer-events: none;
 z-index: 0;
 }
+body::after {
+content: ‘’;
+position: fixed;
+inset: 0;
+background-image: url(“data:image/svg+xml,%3Csvg viewBox=‘0 0 256 256’ xmlns=‘http://www.w3.org/2000/svg’%3E%3Cfilter id=‘noise’%3E%3CfeTurbulence type=‘fractalNoise’ baseFrequency=‘0.9’ numOctaves=‘4’ stitchTiles=‘stitch’/%3E%3C/filter%3E%3Crect width=‘100%25’ height=‘100%25’ filter=‘url(%23noise)’ opacity=‘0.04’/%3E%3C/svg%3E”);
+pointer-events: none;
+z-index: 100;
+opacity: 0.4;
+}
 
-.wrap {
-width: 100%;
-max-width: 480px;
+/* Filmstrip holes - left */
+.filmstrip-left, .filmstrip-right {
+position: fixed;
+top: 0;
+width: 28px;
+height: 100%;
+background: #050505;
+border-right: 1px solid rgba(26,108,245,0.15);
+z-index: 10;
+display: flex;
+flex-direction: column;
+align-items: center;
+padding: 20px 0;
+gap: 18px;
+}
+.filmstrip-right {
+right: 0;
+left: auto;
+border-right: none;
+border-left: 1px solid rgba(255,255,255,0.06);
+}
+.hole {
+width: 12px;
+height: 9px;
+border-radius: 2px;
+background: var(–bg);
+border: 1px solid rgba(255,255,255,0.12);
+flex-shrink: 0;
+}
+
+/* Main content */
+.main {
+margin: 0 28px;
+min-height: 100vh;
+display: flex;
+flex-direction: column;
+}
+
+/* Top bar */
+.topbar {
+display: flex;
+align-items: center;
+justify-content: space-between;
+padding: 20px 24px;
+border-bottom: 1px solid var(–border);
+}
+
+.logo {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 22px;
+letter-spacing: 0.12em;
+color: var(–white);
+}
+.logo span { color: var(–accent); }
+
+.topbar-right {
+display: flex;
+align-items: center;
+gap: 16px;
+}
+
+.frame-counter {
+font-size: 9px;
+letter-spacing: 0.2em;
+color: var(–muted);
+font-weight: 500;
+}
+
+.rec {
+display: flex;
+align-items: center;
+gap: 6px;
+font-size: 9px;
+letter-spacing: 0.2em;
+color: #e05555;
+font-weight: 600;
+}
+.rec-dot {
+width: 6px; height: 6px;
+border-radius: 50%;
+background: #e05555;
+animation: blink 1.5s infinite;
+}
+@keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+
+/* Hero */
+.hero {
+padding: 48px 24px 40px;
 position: relative;
-z-index: 1;
-animation: rise 0.8s cubic-bezier(0.16,1,0.3,1) both;
 }
 
-@keyframes rise {
-from { opacity: 0; transform: translateY(40px); }
-to   { opacity: 1; transform: translateY(0); }
+.hero-tag {
+font-size: 9px;
+letter-spacing: 0.3em;
+text-transform: uppercase;
+color: var(–accent);
+font-weight: 600;
+margin-bottom: 20px;
+display: flex;
+align-items: center;
+gap: 10px;
+}
+.hero-tag::before {
+content: ‘’;
+width: 24px;
+height: 1px;
+background: var(–accent);
 }
 
-.badge {
-display: inline-flex;
+.hero h1 {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: clamp(52px, 12vw, 88px);
+line-height: 0.95;
+letter-spacing: 0.02em;
+color: var(–white);
+margin-bottom: 24px;
+}
+
+.hero h1 .outline {
+-webkit-text-stroke: 1px rgba(26,108,245,0.5);
+color: transparent;
+}
+
+.hero-sub {
+font-size: 12px;
+color: var(–muted);
+font-weight: 300;
+line-height: 1.8;
+max-width: 280px;
+letter-spacing: 0.04em;
+}
+
+/* Camera icon decoration */
+.camera-deco {
+position: absolute;
+right: 24px;
+top: 48px;
+opacity: 0.06;
+width: 120px;
+}
+
+/* Timecode bar */
+.timecode-bar {
+display: flex;
+align-items: center;
+gap: 12px;
+padding: 10px 24px;
+border-top: 1px solid var(–border);
+border-bottom: 1px solid var(–border);
+margin-bottom: 40px;
+}
+.timecode {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 13px;
+letter-spacing: 0.15em;
+color: var(–muted);
+}
+.timecode-line {
+flex: 1;
+height: 1px;
+background: linear-gradient(to right, rgba(26,108,245,0.5), transparent);
+}
+.scene-tag {
+font-size: 9px;
+letter-spacing: 0.2em;
+color: var(–accent);
+font-weight: 600;
+text-transform: uppercase;
+}
+
+/* Form */
+.form-wrap {
+padding: 0 24px 48px;
+}
+
+.field {
+margin-bottom: 28px;
+position: relative;
+}
+
+.field-label {
+font-size: 8px;
+letter-spacing: 0.28em;
+text-transform: uppercase;
+color: var(–muted);
+font-weight: 600;
+margin-bottom: 10px;
+display: flex;
 align-items: center;
 gap: 8px;
-background: rgba(26,108,245,0.12);
-border: 1px solid var(–border-blue);
-padding: 6px 14px;
-margin-bottom: 24px;
-animation: rise 0.6s 0.1s both;
 }
-
-.badge-dot {
-width: 6px; height: 6px;
-background: var(–blue-bright);
-border-radius: 50%;
-animation: pulse 2s infinite;
-}
-
-@keyframes pulse {
-0%, 100% { opacity: 1; transform: scale(1); }
-50%       { opacity: 0.5; transform: scale(0.8); }
-}
-
-.badge span {
-font-size: 10px;
-letter-spacing: 0.18em;
-text-transform: uppercase;
-color: var(–blue-bright);
-font-weight: 600;
-}
-
-.headline {
-margin-bottom: 36px;
-animation: rise 0.6s 0.15s both;
-}
-
-.headline h1 {
-font-family: ‘Unbounded’, sans-serif;
-font-size: 38px;
-font-weight: 900;
-line-height: 1.05;
-color: var(–white);
-text-transform: uppercase;
-letter-spacing: -0.02em;
-margin-bottom: 4px;
-}
-
-.headline h1 .blue { color: var(–blue-bright); }
-
-.headline p {
-font-size: 13px;
-color: var(–gray);
-font-weight: 300;
-margin-top: 12px;
-line-height: 1.65;
-}
-
-.card {
-background: var(–bg2);
-border: 1px solid var(–border);
-padding: 32px 28px;
-position: relative;
-overflow: hidden;
-}
-
-.card::before {
+.field-label::before {
 content: ‘’;
-position: absolute;
-top: 0; left: 0;
-width: 3px;
-height: 100%;
-background: linear-gradient(to bottom, var(–blue), transparent);
-}
-
-.form-row {
-margin-bottom: 22px;
-animation: rise 0.5s both;
-}
-.form-row:nth-child(1) { animation-delay: 0.25s; }
-.form-row:nth-child(2) { animation-delay: 0.32s; }
-.form-row:nth-child(3) { animation-delay: 0.39s; }
-.form-row:nth-child(4) { animation-delay: 0.46s; }
-.form-row:nth-child(5) { animation-delay: 0.53s; }
-
-label {
-display: block;
-font-size: 9px;
-letter-spacing: 0.22em;
-text-transform: uppercase;
-color: var(–gray);
-font-weight: 600;
-margin-bottom: 8px;
+width: 3px; height: 3px;
+background: var(–accent);
+border-radius: 50%;
 }
 
 input, select, textarea {
 width: 100%;
-background: rgba(255,255,255,0.04);
-border: 1px solid var(–border);
+background: transparent;
+border: none;
+border-bottom: 1px solid rgba(240,236,228,0.12);
 color: var(–white);
-font-family: ‘Manrope’, sans-serif;
-font-size: 14px;
-font-weight: 400;
-padding: 13px 16px;
+font-family: ‘Montserrat’, sans-serif;
+font-size: 15px;
+font-weight: 300;
+padding: 12px 0;
 outline: none;
-transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
-border-radius: 0;
+transition: border-color 0.3s;
 appearance: none;
+border-radius: 0;
+letter-spacing: 0.02em;
 }
 
 input::placeholder, textarea::placeholder {
-color: rgba(255,255,255,0.18);
+color: rgba(240,236,228,0.15);
+font-size: 13px;
 }
 
 input:focus, select:focus, textarea:focus {
-border-color: var(–blue);
-background: rgba(26,108,245,0.05);
-box-shadow: 0 0 0 3px rgba(26,108,245,0.1);
+border-bottom-color: var(–accent);
 }
 
 select {
 cursor: pointer;
-background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘11’ height=‘7’ fill=‘none’%3E%3Cpath d=‘M1 1l4.5 4.5L10 1’ stroke=’%231a6cf5’ stroke-width=‘1.5’ stroke-linecap=‘round’ stroke-linejoin=‘round’/%3E%3C/svg%3E”);
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘10’ height=‘6’ fill=‘none’%3E%3Cpath d=‘M1 1l4 4 4-4’ stroke=’%23e8c96d’ stroke-width=‘1.2’ stroke-linecap=‘round’ stroke-linejoin=‘round’/%3E%3C/svg%3E”);
 background-repeat: no-repeat;
-background-position: right 16px center;
-padding-right: 40px;
+background-position: right 0 center;
+padding-right: 20px;
 }
+select option { background: #111; color: #fff; }
 
-select option { background: #1a1a1a; color: #fff; }
-
-textarea { resize: none; height: 90px; line-height: 1.6; }
+textarea { resize: none; height: 80px; line-height: 1.6; }
 
 .two-col {
 display: grid;
 grid-template-columns: 1fr 1fr;
-gap: 14px;
+gap: 24px;
 }
 
+/* Separator */
 .sep {
-height: 1px;
-background: var(–border);
-margin: 24px 0;
+display: flex;
+align-items: center;
+gap: 12px;
+margin: 8px 0 28px;
+}
+.sep-line { flex: 1; height: 1px; background: var(–border); }
+.sep-text {
+font-size: 8px;
+letter-spacing: 0.2em;
+text-transform: uppercase;
+color: var(–muted);
 }
 
-.btn-wrap { animation: rise 0.5s 0.6s both; }
-
+/* Submit */
 .btn {
 width: 100%;
-padding: 17px;
-background: var(–blue);
+padding: 20px;
+background: var(–accent);
 border: none;
 color: #fff;
-font-family: ‘Unbounded’, sans-serif;
-font-size: 11px;
-letter-spacing: 0.18em;
-text-transform: uppercase;
-font-weight: 700;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 16px;
+letter-spacing: 0.25em;
 cursor: pointer;
 position: relative;
 overflow: hidden;
-transition: background 0.3s, box-shadow 0.3s;
+transition: all 0.3s;
+margin-top: 12px;
 }
 
-.btn::after {
+.btn::before {
 content: ‘’;
 position: absolute;
 inset: 0;
-background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+background: var(–accent);
+transform: translateX(-101%);
+transition: transform 0.4s cubic-bezier(0.76, 0, 0.24, 1);
 }
+.btn:hover::before { transform: translateX(0); }
+.btn::before { background: #3d85ff; }
+.btn span { position: relative; z-index: 1; }
 
-.btn:hover {
-background: var(–blue-bright);
-box-shadow: 0 8px 32px var(–blue-glow);
-}
-
-.btn:active { transform: scale(0.99); }
-
-.stats {
-display: flex;
-margin-top: 24px;
-border: 1px solid var(–border);
-animation: rise 0.5s 0.7s both;
-}
-
-.stat {
-flex: 1;
-padding: 16px 12px;
-text-align: center;
-border-right: 1px solid var(–border);
-}
-.stat:last-child { border-right: none; }
-
-.stat-num {
-font-family: ‘Unbounded’, sans-serif;
-font-size: 18px;
-font-weight: 900;
-color: var(–white);
-display: block;
-line-height: 1;
-margin-bottom: 4px;
-}
-
-.stat-num .accent { color: var(–blue-bright); }
-
-.stat-label {
-font-size: 9px;
-letter-spacing: 0.1em;
-text-transform: uppercase;
-color: var(–gray);
-font-weight: 500;
-}
-
-.logo-row {
+/* Bottom metadata */
+.meta-bar {
 display: flex;
 align-items: center;
 justify-content: space-between;
-margin-bottom: 28px;
-animation: rise 0.5s 0.05s both;
+padding: 16px 24px;
+border-top: 1px solid var(–border);
+margin-top: auto;
 }
-
-.logo {
-font-family: ‘Unbounded’, sans-serif;
-font-size: 16px;
-font-weight: 900;
-color: var(–white);
-letter-spacing: 0.06em;
-}
-.logo .k { color: var(–blue-bright); }
-
-.logo-sub {
+.meta-text {
 font-size: 9px;
-letter-spacing: 0.22em;
+letter-spacing: 0.18em;
+color: var(–muted);
 text-transform: uppercase;
-color: var(–gray);
-font-weight: 500;
-margin-top: 2px;
 }
 
-.at {
-font-size: 12px;
-color: var(–gray);
-font-weight: 400;
-letter-spacing: 0.04em;
-}
-
+/* Success */
 .success {
 display: none;
+padding: 60px 24px;
 text-align: center;
-padding: 60px 0;
-animation: rise 0.6s both;
+animation: fadeUp 0.6s both;
 }
-
-.success-num {
+.success-frame {
+border: 1px solid rgba(232,201,109,0.2);
+padding: 48px 32px;
+position: relative;
+}
+.success-frame::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0;
+width: 20px; height: 20px;
+border-top: 1px solid var(–accent);
+border-left: 1px solid var(–accent);
+}
+.success-frame::after {
+content: ‘’;
+position: absolute;
+bottom: 0; right: 0;
+width: 20px; height: 20px;
+border-bottom: 1px solid var(–accent);
+border-right: 1px solid var(–accent);
+}
+.success-icon {
 font-family: ‘Bebas Neue’, sans-serif;
-font-size: 80px;
-line-height: 1;
-color: var(–blue-bright);
+font-size: 64px;
+color: var(–accent);
 display: block;
-margin-bottom: 8px;
+line-height: 1;
+margin-bottom: 16px;
 }
-
 .success h2 {
-font-family: ‘Unbounded’, sans-serif;
-font-size: 22px;
-font-weight: 900;
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 32px;
+letter-spacing: 0.1em;
 color: var(–white);
-text-transform: uppercase;
-margin-bottom: 12px;
-letter-spacing: -0.01em;
+margin-bottom: 10px;
 }
-
 .success p {
-font-size: 13px;
-color: var(–gray);
-line-height: 1.7;
-font-weight: 300;
+font-size: 12px;
+color: var(–muted);
+line-height: 1.8;
+letter-spacing: 0.06em;
 }
 
-@media (max-width: 420px) {
-.headline h1 { font-size: 28px; }
-.card { padding: 24px 20px; }
-.two-col { grid-template-columns: 1fr; gap: 22px; }
+@keyframes fadeUp {
+from { opacity: 0; transform: translateY(20px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+
+.page-anim { animation: fadeUp 0.8s cubic-bezier(0.16,1,0.3,1) both; }
+
+@media (max-width: 400px) {
+.two-col { grid-template-columns: 1fr; gap: 0; }
+.filmstrip-left, .filmstrip-right { width: 18px; }
+.main { margin: 0 18px; }
 }
 </style>
 
 </head>
 <body>
-<div class="wrap">
 
-  <div class="logo-row">
-    <div>
-      <div class="logo"><span class="k">K</span>AI PRODUCTION</div>
-      <div class="logo-sub">Video Marketing · Moldova</div>
+<!-- Filmstrips -->
+
+<div class="filmstrip-left">
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+</div>
+<div class="filmstrip-right">
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+  <div class="hole"></div><div class="hole"></div><div class="hole"></div>
+</div>
+
+<div class="main page-anim">
+
+  <!-- Top bar -->
+
+  <div class="topbar">
+    <div class="logo"><span style="color:#1a6cf5">K</span>AI PRODUCTION</div>
+    <div class="topbar-right">
+      <span class="frame-counter">00:00:01:24</span>
+      <div class="rec"><div class="rec-dot"></div>REC</div>
     </div>
-    <span class="at">@kai.production.md</span>
   </div>
 
-  <div class="badge">
-    <div class="badge-dot"></div>
-    <span>Принимаем заявки</span>
-  </div>
+  <!-- Hero -->
 
-  <div class="headline">
-    <h1>РАБОТАЕМ<br>С <span class="blue">ТЕМИ,</span><br>КТО ХОЧЕТ<br>РАСТИ.</h1>
-    <p>Заполните форму — мы свяжемся с вами<br>в течение 24 часов и обсудим проект.</p>
-  </div>
-
-  <div class="card">
-    <form id="form">
-      <div class="form-row">
-        <label>Название бизнеса</label>
-        <input type="text" name="business" placeholder="Ваш бренд или компания" required>
-      </div>
+  <div class="hero">
+    <svg class="camera-deco" viewBox="0 0 200 140" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <rect x="10" y="30" width="140" height="90" rx="6" stroke="white" stroke-width="3"/>
+      <circle cx="80" cy="75" r="28" stroke="white" stroke-width="3"/>
+      <circle cx="80" cy="75" r="16" stroke="white" stroke-width="2"/>
+      <rect x="150" y="50" width="40" height="50" rx="4" stroke="white" stroke-width="2.5"/>
+      <rect x="30" y="10" width="50" height="20" rx="3" stroke="white" stroke-width="2"/>
+      <circle cx="155" cy="20" r="5" stroke="white" stroke-width="2"/>
+    </svg>
 
 ```
-  <div class="form-row">
-    <label>Отрасль</label>
+<div class="hero-tag">KAI Production · Moldova</div>
+<h1>СНИМАЕМ<br><span class="outline">ОБРАЗЫ</span><br>КОТОРЫЕ<br>ПРОДАЮТ.</h1>
+<p class="hero-sub">Заполните форму — мы свяжемся с вами в течение 24 часов и обсудим ваш проект.</p>
+```
+
+  </div>
+
+  <!-- Timecode -->
+
+  <div class="timecode-bar">
+    <span class="timecode">TC 00:00:01:24</span>
+    <div class="timecode-line"></div>
+    <span class="scene-tag">Scene 01 · Take 01</span>
+  </div>
+
+  <!-- Form -->
+
+  <div class="form-wrap">
+    <form id="form">
+
+```
+  <div class="field">
+    <div class="field-label">Название бизнеса</div>
+    <input type="text" name="business" placeholder="Ваш бренд или компания" required>
+  </div>
+
+  <div class="field">
+    <div class="field-label">Отрасль</div>
     <select name="industry" required>
       <option value="" disabled selected>Выберите отрасль</option>
       <option>Ресторан / HoReCa</option>
@@ -386,8 +507,8 @@ font-weight: 300;
     </select>
   </div>
 
-  <div class="form-row">
-    <label>Тип видео</label>
+  <div class="field">
+    <div class="field-label">Тип видео</div>
     <select name="video_type" required>
       <option value="" disabled selected>Что вам нужно?</option>
       <option>Brand Film — имиджевый фильм</option>
@@ -399,8 +520,8 @@ font-weight: 300;
     </select>
   </div>
 
-  <div class="form-row">
-    <label>Приблизительный бюджет</label>
+  <div class="field">
+    <div class="field-label">Приблизительный бюджет</div>
     <select name="budget" required>
       <option value="" disabled selected>Укажите диапазон</option>
       <option>До 500 €</option>
@@ -411,40 +532,63 @@ font-weight: 300;
     </select>
   </div>
 
-  <div class="sep"></div>
+  <div class="sep">
+    <div class="sep-line"></div>
+    <span class="sep-text">Контакты</span>
+    <div class="sep-line"></div>
+  </div>
 
-  <div class="form-row two-col">
-    <div>
-      <label>Телефон</label>
+  <div class="two-col">
+    <div class="field">
+      <div class="field-label">Телефон</div>
       <input type="tel" name="phone" placeholder="+373 000 000 00">
     </div>
-    <div>
-      <label>Email</label>
+    <div class="field">
+      <div class="field-label">Email</div>
       <input type="email" name="email" placeholder="you@email.com" required>
     </div>
   </div>
 
-  <div class="btn-wrap">
-    <button type="submit" class="btn">Отправить заявку →</button>
-  </div>
+  <button type="submit" class="btn"><span>ОТПРАВИТЬ ЗАЯВКУ →</span></button>
+
 </form>
 
 <div class="success" id="success">
-  <span class="success-num">✓</span>
-  <h2>Заявка получена</h2>
-  <p>Мы свяжемся с вами<br>в течение 24 часов.</p>
+  <div class="success-frame">
+    <span class="success-icon">✓</span>
+    <h2>ЗАЯВКА ПРИНЯТА</h2>
+    <p>Свяжемся с вами<br>в течение 24 часов.</p>
+  </div>
 </div>
 ```
 
   </div>
 
+  <!-- Bottom bar -->
+
+  <div class="meta-bar">
+    <span class="meta-text">@kai.production.md</span>
+    <span class="meta-text">+6 лет · Video Marketing</span>
+  </div>
+
 </div>
 
 <script>
+  // Animate timecode
+  const tc = document.querySelector('.timecode');
+  let f = 0;
+  setInterval(() => {
+    f = (f + 1) % 25;
+    const s = Math.floor(Date.now() / 1000) % 60;
+    const m = Math.floor(Date.now() / 60000) % 60;
+    tc.textContent = `TC 00:${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}:${String(f).padStart(2,'0')}`;
+    document.querySelector('.frame-counter').textContent = `${String(m).padStart(2,'0')}:${String(s).padStart(2,'0')}:${String(f).padStart(2,'0')}`;
+  }, 40);
+
   document.getElementById('form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const btn = this.querySelector('button');
-    btn.textContent = 'Отправка...';
+    btn.querySelector('span').textContent = 'ОТПРАВКА...';
     btn.disabled = true;
 
     const data = new FormData(this);
@@ -459,11 +603,10 @@ font-weight: 300;
       this.style.transition = 'opacity 0.3s';
       setTimeout(() => {
         this.style.display = 'none';
-        const s = document.getElementById('success');
-        s.style.display = 'block';
+        document.getElementById('success').style.display = 'block';
       }, 300);
     } else {
-      btn.textContent = 'Ошибка — попробуйте снова';
+      btn.querySelector('span').textContent = 'ОШИБКА — ПОПРОБУЙТЕ СНОВА';
       btn.disabled = false;
     }
   });
