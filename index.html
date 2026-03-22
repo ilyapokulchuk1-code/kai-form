@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAI Production — Заявка</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Unbounded:wght@300;400;700;900&family=Manrope:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+–bg: #0d0d0d;
+–bg2: #141414;
+–blue: #1a6cf5;
+–blue-bright: #3d85ff;
+–blue-glow: rgba(26,108,245,0.35);
+–white: #ffffff;
+–gray: #9a9a9a;
+–border: rgba(255,255,255,0.07);
+–border-blue: rgba(26,108,245,0.4);
+}
+
+body {
+background: var(–bg);
+font-family: ‘Manrope’, sans-serif;
+min-height: 100vh;
+display: flex;
+align-items: center;
+justify-content: center;
+padding: 32px 16px;
+position: relative;
+overflow-x: hidden;
+}
+
+body::before {
+content: ‘’;
+position: fixed;
+top: -100px; left: -100px;
+width: 500px; height: 500px;
+background: radial-gradient(circle, rgba(26,108,245,0.12) 0%, transparent 65%);
+pointer-events: none;
+z-index: 0;
+}
+
+.wrap {
+width: 100%;
+max-width: 480px;
+position: relative;
+z-index: 1;
+animation: rise 0.8s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes rise {
+from { opacity: 0; transform: translateY(40px); }
+to   { opacity: 1; transform: translateY(0); }
+}
+
+.badge {
+display: inline-flex;
+align-items: center;
+gap: 8px;
+background: rgba(26,108,245,0.12);
+border: 1px solid var(–border-blue);
+padding: 6px 14px;
+margin-bottom: 24px;
+animation: rise 0.6s 0.1s both;
+}
+
+.badge-dot {
+width: 6px; height: 6px;
+background: var(–blue-bright);
+border-radius: 50%;
+animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+0%, 100% { opacity: 1; transform: scale(1); }
+50%       { opacity: 0.5; transform: scale(0.8); }
+}
+
+.badge span {
+font-size: 10px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+color: var(–blue-bright);
+font-weight: 600;
+}
+
+.headline {
+margin-bottom: 36px;
+animation: rise 0.6s 0.15s both;
+}
+
+.headline h1 {
+font-family: ‘Unbounded’, sans-serif;
+font-size: 38px;
+font-weight: 900;
+line-height: 1.05;
+color: var(–white);
+text-transform: uppercase;
+letter-spacing: -0.02em;
+margin-bottom: 4px;
+}
+
+.headline h1 .blue { color: var(–blue-bright); }
+
+.headline p {
+font-size: 13px;
+color: var(–gray);
+font-weight: 300;
+margin-top: 12px;
+line-height: 1.65;
+}
+
+.card {
+background: var(–bg2);
+border: 1px solid var(–border);
+padding: 32px 28px;
+position: relative;
+overflow: hidden;
+}
+
+.card::before {
+content: ‘’;
+position: absolute;
+top: 0; left: 0;
+width: 3px;
+height: 100%;
+background: linear-gradient(to bottom, var(–blue), transparent);
+}
+
+.form-row {
+margin-bottom: 22px;
+animation: rise 0.5s both;
+}
+.form-row:nth-child(1) { animation-delay: 0.25s; }
+.form-row:nth-child(2) { animation-delay: 0.32s; }
+.form-row:nth-child(3) { animation-delay: 0.39s; }
+.form-row:nth-child(4) { animation-delay: 0.46s; }
+.form-row:nth-child(5) { animation-delay: 0.53s; }
+
+label {
+display: block;
+font-size: 9px;
+letter-spacing: 0.22em;
+text-transform: uppercase;
+color: var(–gray);
+font-weight: 600;
+margin-bottom: 8px;
+}
+
+input, select, textarea {
+width: 100%;
+background: rgba(255,255,255,0.04);
+border: 1px solid var(–border);
+color: var(–white);
+font-family: ‘Manrope’, sans-serif;
+font-size: 14px;
+font-weight: 400;
+padding: 13px 16px;
+outline: none;
+transition: border-color 0.25s, background 0.25s, box-shadow 0.25s;
+border-radius: 0;
+appearance: none;
+}
+
+input::placeholder, textarea::placeholder {
+color: rgba(255,255,255,0.18);
+}
+
+input:focus, select:focus, textarea:focus {
+border-color: var(–blue);
+background: rgba(26,108,245,0.05);
+box-shadow: 0 0 0 3px rgba(26,108,245,0.1);
+}
+
+select {
+cursor: pointer;
+background-image: url(“data:image/svg+xml,%3Csvg xmlns=‘http://www.w3.org/2000/svg’ width=‘11’ height=‘7’ fill=‘none’%3E%3Cpath d=‘M1 1l4.5 4.5L10 1’ stroke=’%231a6cf5’ stroke-width=‘1.5’ stroke-linecap=‘round’ stroke-linejoin=‘round’/%3E%3C/svg%3E”);
+background-repeat: no-repeat;
+background-position: right 16px center;
+padding-right: 40px;
+}
+
+select option { background: #1a1a1a; color: #fff; }
+
+textarea { resize: none; height: 90px; line-height: 1.6; }
+
+.two-col {
+display: grid;
+grid-template-columns: 1fr 1fr;
+gap: 14px;
+}
+
+.sep {
+height: 1px;
+background: var(–border);
+margin: 24px 0;
+}
+
+.btn-wrap { animation: rise 0.5s 0.6s both; }
+
+.btn {
+width: 100%;
+padding: 17px;
+background: var(–blue);
+border: none;
+color: #fff;
+font-family: ‘Unbounded’, sans-serif;
+font-size: 11px;
+letter-spacing: 0.18em;
+text-transform: uppercase;
+font-weight: 700;
+cursor: pointer;
+position: relative;
+overflow: hidden;
+transition: background 0.3s, box-shadow 0.3s;
+}
+
+.btn::after {
+content: ‘’;
+position: absolute;
+inset: 0;
+background: linear-gradient(135deg, rgba(255,255,255,0.12), transparent);
+}
+
+.btn:hover {
+background: var(–blue-bright);
+box-shadow: 0 8px 32px var(–blue-glow);
+}
+
+.btn:active { transform: scale(0.99); }
+
+.stats {
+display: flex;
+margin-top: 24px;
+border: 1px solid var(–border);
+animation: rise 0.5s 0.7s both;
+}
+
+.stat {
+flex: 1;
+padding: 16px 12px;
+text-align: center;
+border-right: 1px solid var(–border);
+}
+.stat:last-child { border-right: none; }
+
+.stat-num {
+font-family: ‘Unbounded’, sans-serif;
+font-size: 18px;
+font-weight: 900;
+color: var(–white);
+display: block;
+line-height: 1;
+margin-bottom: 4px;
+}
+
+.stat-num .accent { color: var(–blue-bright); }
+
+.stat-label {
+font-size: 9px;
+letter-spacing: 0.1em;
+text-transform: uppercase;
+color: var(–gray);
+font-weight: 500;
+}
+
+.logo-row {
+display: flex;
+align-items: center;
+justify-content: space-between;
+margin-bottom: 28px;
+animation: rise 0.5s 0.05s both;
+}
+
+.logo {
+font-family: ‘Unbounded’, sans-serif;
+font-size: 16px;
+font-weight: 900;
+color: var(–white);
+letter-spacing: 0.06em;
+}
+.logo .k { color: var(–blue-bright); }
+
+.logo-sub {
+font-size: 9px;
+letter-spacing: 0.22em;
+text-transform: uppercase;
+color: var(–gray);
+font-weight: 500;
+margin-top: 2px;
+}
+
+.at {
+font-size: 12px;
+color: var(–gray);
+font-weight: 400;
+letter-spacing: 0.04em;
+}
+
+.success {
+display: none;
+text-align: center;
+padding: 60px 0;
+animation: rise 0.6s both;
+}
+
+.success-num {
+font-family: ‘Bebas Neue’, sans-serif;
+font-size: 80px;
+line-height: 1;
+color: var(–blue-bright);
+display: block;
+margin-bottom: 8px;
+}
+
+.success h2 {
+font-family: ‘Unbounded’, sans-serif;
+font-size: 22px;
+font-weight: 900;
+color: var(–white);
+text-transform: uppercase;
+margin-bottom: 12px;
+letter-spacing: -0.01em;
+}
+
+.success p {
+font-size: 13px;
+color: var(–gray);
+line-height: 1.7;
+font-weight: 300;
+}
+
+@media (max-width: 420px) {
+.headline h1 { font-size: 28px; }
+.card { padding: 24px 20px; }
+.two-col { grid-template-columns: 1fr; gap: 22px; }
+}
+</style>
+
+</head>
+<body>
+<div class="wrap">
+
+  <div class="logo-row">
+    <div>
+      <div class="logo"><span class="k">K</span>AI PRODUCTION</div>
+      <div class="logo-sub">Video Marketing · Moldova</div>
+    </div>
+    <span class="at">@kai.production.md</span>
+  </div>
+
+  <div class="badge">
+    <div class="badge-dot"></div>
+    <span>Принимаем заявки</span>
+  </div>
+
+  <div class="headline">
+    <h1>РАБОТАЕМ<br>С <span class="blue">ТЕМИ,</span><br>КТО ХОЧЕТ<br>РАСТИ.</h1>
+    <p>Заполните форму — мы свяжемся с вами<br>в течение 24 часов и обсудим проект.</p>
+  </div>
+
+  <div class="card">
+    <form id="form">
+      <div class="form-row">
+        <label>Название бизнеса</label>
+        <input type="text" name="business" placeholder="Ваш бренд или компания" required>
+      </div>
+
+```
+  <div class="form-row">
+    <label>Отрасль</label>
+    <select name="industry" required>
+      <option value="" disabled selected>Выберите отрасль</option>
+      <option>Ресторан / HoReCa</option>
+      <option>Медицина / Клиника</option>
+      <option>Мода / Одежда</option>
+      <option>Недвижимость</option>
+      <option>Красота / Косметология</option>
+      <option>Образование</option>
+      <option>Технологии / IT</option>
+      <option>Финансы</option>
+      <option>Другое</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label>Тип видео</label>
+    <select name="video_type" required>
+      <option value="" disabled selected>Что вам нужно?</option>
+      <option>Brand Film — имиджевый фильм</option>
+      <option>Reels для Instagram</option>
+      <option>Рекламный ролик</option>
+      <option>Корпоративное видео</option>
+      <option>Продуктовое видео</option>
+      <option>Нужна консультация</option>
+    </select>
+  </div>
+
+  <div class="form-row">
+    <label>Приблизительный бюджет</label>
+    <select name="budget" required>
+      <option value="" disabled selected>Укажите диапазон</option>
+      <option>До 500 €</option>
+      <option>500 — 1 000 €</option>
+      <option>1 000 — 2 500 €</option>
+      <option>2 500 — 5 000 €</option>
+      <option>Свыше 5 000 €</option>
+    </select>
+  </div>
+
+  <div class="sep"></div>
+
+  <div class="form-row two-col">
+    <div>
+      <label>Телефон</label>
+      <input type="tel" name="phone" placeholder="+373 000 000 00">
+    </div>
+    <div>
+      <label>Email</label>
+      <input type="email" name="email" placeholder="you@email.com" required>
+    </div>
+  </div>
+
+  <div class="btn-wrap">
+    <button type="submit" class="btn">Отправить заявку →</button>
+  </div>
+</form>
+
+<div class="success" id="success">
+  <span class="success-num">✓</span>
+  <h2>Заявка получена</h2>
+  <p>Мы свяжемся с вами<br>в течение 24 часов.</p>
+</div>
+```
+
+  </div>
+
+</div>
+
+<script>
+  document.getElementById('form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const btn = this.querySelector('button');
+    btn.textContent = 'Отправка...';
+    btn.disabled = true;
+
+    const data = new FormData(this);
+    const res = await fetch('https://formspree.io/f/mreyvwwp', {
+      method: 'POST',
+      body: data,
+      headers: { 'Accept': 'application/json' }
+    });
+
+    if (res.ok) {
+      this.style.opacity = '0';
+      this.style.transition = 'opacity 0.3s';
+      setTimeout(() => {
+        this.style.display = 'none';
+        const s = document.getElementById('success');
+        s.style.display = 'block';
+      }, 300);
+    } else {
+      btn.textContent = 'Ошибка — попробуйте снова';
+      btn.disabled = false;
+    }
+  });
+</script>
+
+</body>
+</html>
