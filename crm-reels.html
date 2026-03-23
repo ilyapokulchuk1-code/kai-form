@@ -1,0 +1,541 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>KAI CRM</title>
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{--bg:#0a0a0f;--surface:#13131a;--card:#1a1a24;--border:#2a2a38;--accent:#ff3c5f;--accent2:#ffb800;--accent3:#00e5a0;--text:#f0f0f8;--muted:#7a7a9a;--tag-bg:#22223a;}
+  *{box-sizing:border-box;margin:0;padding:0;}
+  body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min-height:100vh;}
+  header{background:var(--surface);border-bottom:1px solid var(--border);padding:0 16px;display:flex;align-items:center;justify-content:space-between;height:60px;position:sticky;top:0;z-index:100;gap:10px;flex-wrap:wrap;}
+  .logo{font-family:'Bebas Neue',cursive;font-size:26px;letter-spacing:2px;color:var(--accent);}
+  .logo span{color:var(--text);}
+  .header-right{display:flex;align-items:center;gap:7px;flex-wrap:wrap;}
+  .user-badge{background:var(--tag-bg);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:12px;font-weight:500;cursor:pointer;transition:all .2s;}
+  .user-badge:hover{border-color:var(--accent);color:var(--accent);}
+  .user-badge.active{background:var(--accent);border-color:var(--accent);color:#fff;}
+  #notif-btn{background:var(--tag-bg);border:1px solid var(--border);border-radius:20px;padding:5px 12px;font-size:13px;cursor:pointer;transition:all .2s;position:relative;}
+  #notif-btn:hover{border-color:var(--accent2);color:var(--accent2);}
+  .notif-dot{position:absolute;top:3px;right:3px;width:7px;height:7px;border-radius:50%;background:var(--accent);display:none;}
+  .sync-badge{display:flex;align-items:center;gap:5px;font-size:11px;color:var(--muted);}
+  .sync-dot{width:7px;height:7px;border-radius:50%;background:var(--muted);}
+  .sync-dot.ok{background:var(--accent3);}
+  .sync-dot.loading{background:var(--accent2);animation:pulse 1s infinite;}
+  @keyframes pulse{0%,100%{opacity:1;}50%{opacity:.3;}}
+  .container{max-width:1500px;margin:0 auto;padding:20px 16px;}
+  .stats-bar{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin-bottom:20px;}
+  .stat-card{background:var(--surface);border:1px solid var(--border);border-radius:12px;padding:14px;text-align:center;transition:transform .2s;}
+  .stat-card:hover{transform:translateY(-2px);}
+  .stat-num{font-family:'Bebas Neue',cursive;font-size:34px;color:var(--accent);line-height:1;}
+  .stat-label{font-size:10px;color:var(--muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
+  .toolbar{display:flex;gap:8px;margin-bottom:16px;flex-wrap:wrap;align-items:center;}
+  .btn-primary{background:var(--accent);color:#fff;border:none;border-radius:8px;padding:9px 18px;font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;cursor:pointer;transition:all .2s;white-space:nowrap;}
+  .btn-primary:hover{background:#ff1a44;transform:translateY(-1px);}
+  .filter-btn{background:var(--surface);border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:12px;cursor:pointer;transition:all .2s;white-space:nowrap;}
+  .filter-btn:hover,.filter-btn.active{border-color:var(--accent);color:var(--text);}
+  .filter-btn.active{background:rgba(255,60,95,0.1);}
+  .search-box{flex:1;min-width:160px;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:8px 14px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+  .search-box:focus{border-color:var(--accent);}
+  .search-box::placeholder{color:var(--muted);}
+  .kanban{display:grid;grid-template-columns:repeat(8,minmax(175px,1fr));gap:12px;overflow-x:auto;padding-bottom:12px;}
+  .column{background:var(--surface);border:1px solid var(--border);border-radius:14px;min-height:360px;display:flex;flex-direction:column;}
+  .col-header{padding:12px 12px 8px;border-bottom:1px solid var(--border);display:flex;align-items:center;justify-content:space-between;}
+  .col-title{font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:1px;}
+  .col-count{background:var(--tag-bg);border-radius:10px;padding:2px 7px;font-size:11px;color:var(--muted);font-weight:600;}
+  .col-body{padding:8px;display:flex;flex-direction:column;gap:8px;flex:1;}
+  .proj-card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:11px;cursor:pointer;transition:all .2s;position:relative;overflow:hidden;animation:fadeIn .3s ease;touch-action:none;user-select:none;}
+  .proj-card::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;border-radius:10px 0 0 10px;}
+  .proj-card:hover{border-color:var(--accent);transform:translateY(-2px);box-shadow:0 8px 24px rgba(255,60,95,.12);}
+  .proj-name{font-size:13px;font-weight:600;margin-bottom:4px;line-height:1.3;}
+  .proj-meta{font-size:11px;color:var(--muted);margin-bottom:6px;}
+  .proj-tags{display:flex;gap:4px;flex-wrap:wrap;margin-bottom:5px;}
+  .tag{background:var(--tag-bg);border-radius:4px;padding:2px 6px;font-size:10px;font-weight:600;text-transform:uppercase;letter-spacing:.5px;}
+  .tag-paid{color:var(--accent3);}.tag-nopay{color:var(--accent);}
+  .proj-footer{display:flex;align-items:center;justify-content:space-between;margin-top:5px;}
+  .assignees{display:flex;}
+  .avatar{width:20px;height:20px;border-radius:50%;border:2px solid var(--card);display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;margin-left:-4px;}
+  .avatar:first-child{margin-left:0;}
+  .av-0{background:#ff3c5f;color:#fff;}.av-1{background:#ffb800;color:#000;}.av-2{background:#00e5a0;color:#000;}.av-3{background:#7c5cfc;color:#fff;}
+  .due-date{font-size:10px;color:var(--muted);}
+  .due-date.overdue{color:var(--accent);}.due-date.soon{color:var(--accent2);}
+  .reels-mini{display:flex;gap:3px;flex-wrap:wrap;margin-top:5px;}
+  .reel-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0;}
+  .stage-0::before{background:#7c5cfc;}.col-0 .col-title{color:#7c5cfc;}
+  .stage-1::before{background:#00b4ff;}.col-1 .col-title{color:#00b4ff;}
+  .stage-2::before{background:#ffb800;}.col-2 .col-title{color:#ffb800;}
+  .stage-3::before{background:#ff7a00;}.col-3 .col-title{color:#ff7a00;}
+  .stage-4::before{background:#ff3c5f;}.col-4 .col-title{color:#ff3c5f;}
+  .stage-5::before{background:#a855f7;}.col-5 .col-title{color:#a855f7;}
+  .stage-6::before{background:#00e5a0;}.col-6 .col-title{color:#00e5a0;}
+  .stage-7::before{background:#3a3a3a;}.col-7 .col-title{color:#555;}
+  .proj-card.stage-7{opacity:0.45;}
+  .overlay{position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:16px;backdrop-filter:blur(4px);overflow-y:auto;}
+  .overlay.open{display:flex;}
+  .modal{background:var(--card);border:1px solid var(--border);border-radius:18px;width:100%;max-width:680px;padding:24px;position:relative;box-shadow:0 24px 80px rgba(0,0,0,.6);margin:auto;}
+  .modal-title{font-family:'Bebas Neue',cursive;font-size:26px;letter-spacing:1px;margin-bottom:14px;}
+  .close-btn{position:absolute;top:16px;right:16px;background:var(--tag-bg);border:1px solid var(--border);color:var(--muted);border-radius:8px;width:30px;height:30px;cursor:pointer;font-size:16px;display:flex;align-items:center;justify-content:center;transition:all .2s;}
+  .close-btn:hover{border-color:var(--accent);color:var(--accent);}
+  .modal-tabs{display:flex;gap:2px;margin-bottom:18px;border-bottom:1px solid var(--border);}
+  .tab-btn{background:none;border:none;color:var(--muted);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:8px 16px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .2s;}
+  .tab-btn:hover{color:var(--text);}
+  .tab-btn.active{color:var(--accent);border-bottom-color:var(--accent);}
+  .tab-pane{display:none;}
+  .tab-pane.active{display:block;}
+  .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+  .form-full{grid-column:1/-1;}
+  label{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:5px;font-weight:600;}
+  input,select,textarea{width:100%;background:var(--surface);border:1px solid var(--border);color:var(--text);border-radius:8px;padding:9px 11px;font-family:'DM Sans',sans-serif;font-size:13px;outline:none;transition:border-color .2s;}
+  input:focus,select:focus,textarea:focus{border-color:var(--accent);}
+  textarea{resize:vertical;min-height:70px;}
+  select option{background:var(--card);}
+  .checkbox-group{display:flex;flex-wrap:wrap;gap:6px;}
+  .checkbox-item{display:flex;align-items:center;gap:6px;background:var(--surface);border:1px solid var(--border);border-radius:8px;padding:6px 10px;cursor:pointer;transition:all .2s;}
+  .checkbox-item input[type=checkbox]{width:auto;}
+  .checkbox-item:has(input:checked){border-color:var(--accent3);background:rgba(0,229,160,.08);color:var(--accent3);}
+  .checkbox-item label{margin:0;color:inherit;cursor:pointer;text-transform:none;letter-spacing:0;font-size:12px;}
+  .form-actions{display:flex;gap:8px;margin-top:18px;justify-content:flex-end;}
+  .btn-secondary{background:transparent;border:1px solid var(--border);color:var(--muted);border-radius:8px;padding:9px 18px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;}
+  .btn-secondary:hover{border-color:var(--muted);color:var(--text);}
+  .btn-danger{background:transparent;border:1px solid #ff3c5f44;color:var(--accent);border-radius:8px;padding:9px 18px;font-family:'DM Sans',sans-serif;font-size:13px;cursor:pointer;transition:all .2s;margin-right:auto;}
+  .btn-danger:hover{background:rgba(255,60,95,.1);}
+  .reels-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;}
+  .reels-title{font-size:13px;font-weight:700;}
+  .btn-add-reel{background:var(--tag-bg);border:1px solid var(--border);color:var(--accent3);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;cursor:pointer;transition:all .2s;font-family:'DM Sans',sans-serif;}
+  .btn-add-reel:hover{border-color:var(--accent3);}
+  .reel-item{background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:12px;margin-bottom:8px;}
+  .reel-top{display:flex;align-items:center;gap:8px;margin-bottom:10px;}
+  .reel-num{background:var(--accent);color:#fff;border-radius:6px;width:22px;height:22px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;}
+  .reel-name-input{flex:1;background:transparent;border:none;border-bottom:1px solid var(--border);color:var(--text);font-family:'DM Sans',sans-serif;font-size:13px;font-weight:600;padding:2px 4px;outline:none;border-radius:0;}
+  .reel-name-input:focus{border-bottom-color:var(--accent);}
+  .reel-name-input::placeholder{color:var(--muted);font-weight:400;}
+  .btn-del-reel{background:none;border:none;color:var(--muted);cursor:pointer;font-size:16px;padding:2px 4px;border-radius:4px;transition:color .2s;flex-shrink:0;}
+  .btn-del-reel:hover{color:var(--accent);}
+  .reel-stages{display:flex;flex-wrap:wrap;gap:5px;}
+  .reel-stage-btn{display:flex;align-items:center;gap:5px;background:var(--tag-bg);border:1px solid var(--border);border-radius:6px;padding:5px 9px;cursor:pointer;font-size:11px;font-weight:600;transition:all .15s;user-select:none;color:var(--muted);font-family:'DM Sans',sans-serif;}
+  .reel-stage-btn .dot{width:6px;height:6px;border-radius:50%;background:var(--muted);flex-shrink:0;}
+  .rs-approved.done{background:rgba(0,180,255,.15);border-color:#00b4ff;color:#00b4ff;}
+  .rs-approved.done .dot{background:#00b4ff;}
+  .rs-shot.done{background:rgba(255,122,0,.15);border-color:#ff7a00;color:#ff7a00;}
+  .rs-shot.done .dot{background:#ff7a00;}
+  .rs-editing.done{background:rgba(255,60,95,.15);border-color:#ff3c5f;color:#ff3c5f;}
+  .rs-editing.done .dot{background:#ff3c5f;}
+  .rs-review.done{background:rgba(168,85,247,.15);border-color:#a855f7;color:#a855f7;}
+  .rs-review.done .dot{background:#a855f7;}
+  .rs-revision.done{background:rgba(255,184,0,.15);border-color:#ffb800;color:#ffb800;}
+  .rs-revision.done .dot{background:#ffb800;}
+  .rs-delivered.done{background:rgba(0,229,160,.15);border-color:#00e5a0;color:#00e5a0;}
+  .rs-delivered.done .dot{background:#00e5a0;}
+  .notif-panel{position:fixed;top:68px;right:16px;width:310px;background:var(--card);border:1px solid var(--border);border-radius:14px;box-shadow:0 20px 60px rgba(0,0,0,.5);z-index:150;display:none;padding:14px;max-height:460px;overflow-y:auto;}
+  .notif-panel.open{display:block;}
+  .notif-title{font-size:11px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:10px;font-weight:700;}
+  .notif-item{padding:9px 11px;border-radius:8px;margin-bottom:6px;background:var(--surface);border-left:3px solid var(--accent2);font-size:12px;line-height:1.5;}
+  .notif-item.urgent{border-color:var(--accent);}.notif-item.ok{border-color:var(--accent3);}
+  .notif-project{font-weight:700;color:var(--text);}.notif-msg{color:var(--muted);margin-top:1px;}
+  .empty-col{text-align:center;padding:24px 8px;color:var(--muted);font-size:12px;}
+  .empty-icon{font-size:22px;margin-bottom:6px;opacity:.4;}
+  /* DRAG */
+  .proj-card.dragging{opacity:0.25;transform:scale(0.96);}
+  .drag-ghost{position:fixed;z-index:9999;pointer-events:none;opacity:0.93;transform:rotate(2.5deg) scale(1.05);box-shadow:0 20px 60px rgba(0,0,0,.7);border-radius:10px;background:var(--card);border:1px solid var(--accent);padding:11px;width:185px;transition:none;}
+  .col-body.drag-over{background:rgba(255,60,95,0.08);border-radius:10px;outline:2px dashed rgba(255,60,95,0.5);outline-offset:-4px;}
+  /* LOADING */
+  .loading-screen{position:fixed;inset:0;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:16px;}
+  .loading-logo{font-family:'Bebas Neue',cursive;font-size:48px;color:var(--accent);}
+  .loading-logo span{color:var(--text);}
+  .loading-bar{width:200px;height:3px;background:var(--border);border-radius:2px;overflow:hidden;}
+  .loading-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--accent2));animation:load 1.5s ease-in-out infinite;}
+  @keyframes load{0%{width:0;margin-left:0;}50%{width:100%;margin-left:0;}100%{width:0;margin-left:100%;}}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px);}to{opacity:1;transform:translateY(0);}}
+  @media(max-width:900px){.stats-bar{grid-template-columns:repeat(3,1fr);}.kanban{grid-template-columns:repeat(4,minmax(165px,1fr));}}
+  @media(max-width:600px){.stats-bar{grid-template-columns:repeat(2,1fr);}.form-grid{grid-template-columns:1fr;}.kanban{grid-template-columns:repeat(2,minmax(155px,1fr));}}
+</style>
+</head>
+<body>
+
+<!-- Loading -->
+<div class="loading-screen" id="loading-screen">
+  <div class="loading-logo">KAI<span>CRM</span></div>
+  <div class="loading-bar"><div class="loading-fill"></div></div>
+  <div style="font-size:12px;color:var(--muted);">Подключение к базе данных...</div>
+</div>
+
+<header>
+  <div class="logo">KAI<span>CRM</span></div>
+  <div class="header-right">
+    <div class="sync-badge"><div class="sync-dot loading" id="sync-dot"></div><span id="sync-label">Синхронизация...</span></div>
+    <div style="font-size:11px;color:var(--muted);">Вы:</div>
+    <div class="user-badge active" data-user="Я (Автор)" onclick="setUser(this)">Я</div>
+    <div class="user-badge" data-user="Ян" onclick="setUser(this)">Ян</div>
+    <div class="user-badge" data-user="Влад" onclick="setUser(this)">Влад</div>
+    <div class="user-badge" data-user="Элвин" onclick="setUser(this)">Элвин</div>
+    <button id="notif-btn" onclick="toggleNotif()">🔔<div class="notif-dot" id="notif-dot"></div></button>
+  </div>
+</header>
+
+<div class="notif-panel" id="notif-panel">
+  <div class="notif-title">⚡ Требуют внимания</div>
+  <div id="notif-list"></div>
+</div>
+
+<div class="container">
+  <div class="stats-bar">
+    <div class="stat-card"><div class="stat-num" id="stat-total">—</div><div class="stat-label">Клиентов</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-active" style="color:var(--accent2)">—</div><div class="stat-label">В работе</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-reels" style="color:#a855f7">—</div><div class="stat-label">Рилсов</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-paid" style="color:var(--accent3)">—</div><div class="stat-label">Оплачено</div></div>
+    <div class="stat-card"><div class="stat-num" id="stat-overdue" style="color:var(--accent)">—</div><div class="stat-label">Просрочено</div></div>
+  </div>
+  <div class="toolbar">
+    <button class="btn-primary" onclick="openNew()">+ Новый клиент</button>
+    <input class="search-box" placeholder="🔍 Поиск..." oninput="filterCards(this.value)">
+    <button class="filter-btn active" onclick="filterMemberFn(null,this)">Все</button>
+    <button class="filter-btn" onclick="filterMemberFn('Ян',this)">Ян</button>
+    <button class="filter-btn" onclick="filterMemberFn('Влад',this)">Влад</button>
+    <button class="filter-btn" onclick="filterMemberFn('Элвин',this)">Элвин</button>
+    <button class="filter-btn" onclick="filterMemberFn('Я (Автор)',this)">Мои</button>
+  </div>
+  <div class="kanban" id="kanban"></div>
+</div>
+
+<!-- MODAL -->
+<div class="overlay" id="modal-overlay" onclick="closeModalOuter(event)">
+<div class="modal">
+  <button class="close-btn" onclick="closeModalBtn()">✕</button>
+  <div class="modal-title" id="modal-heading">Новый клиент</div>
+  <div class="modal-tabs">
+    <button class="tab-btn active" id="tab-btn-info" onclick="switchTab('info',this)">📋 Инфо</button>
+    <button class="tab-btn" id="tab-btn-reels" onclick="switchTab('reels',this)">🎬 Рилсы</button>
+    <button class="tab-btn" id="tab-btn-notes" onclick="switchTab('notes',this)">📝 Заметки</button>
+  </div>
+  <div class="tab-pane active" id="tab-info">
+    <div class="form-grid">
+      <div class="form-full"><label>Название клиента *</label><input id="f-name" placeholder="Cafe Bliss"></div>
+      <div><label>Контакт</label><input id="f-contact" placeholder="+373 / @instagram"></div>
+      <div><label>Ответственный</label>
+        <select id="f-owner"><option>Я (Автор)</option><option>Ян</option><option>Влад</option><option>Элвин</option></select>
+      </div>
+      <div><label>Этап сделки</label>
+        <select id="f-stage">
+          <option value="0">📞 Переговоры</option><option value="1">💡 Обсуждение идеи</option>
+          <option value="2">💰 Оплата</option><option value="3">🎬 Съёмка</option>
+          <option value="4">✂️ Монтаж</option><option value="5">👁️ Проверка</option>
+          <option value="6">✅ Готово</option><option value="7">🗑 Удалён</option>
+        </select>
+      </div>
+      <div><label>Дата съёмки</label><input type="date" id="f-shoot-date"></div>
+      <div><label>Дедлайн</label><input type="date" id="f-deadline"></div>
+      <div><label>Бюджет (MDL)</label><input type="number" id="f-budget" placeholder="5000"></div>
+      <div><label>Оплата</label>
+        <select id="f-paid">
+          <option value="no">❌ Не оплачено</option><option value="partial">🔄 Частично</option><option value="yes">✅ Оплачено</option>
+        </select>
+      </div>
+      <div class="form-full"><label>Команда</label>
+        <div class="checkbox-group">
+          <label class="checkbox-item"><input type="checkbox" id="t-me"><label for="t-me">Я (Автор)</label></label>
+          <label class="checkbox-item"><input type="checkbox" id="t-yan"><label for="t-yan">Ян</label></label>
+          <label class="checkbox-item"><input type="checkbox" id="t-vlad"><label for="t-vlad">Влад</label></label>
+          <label class="checkbox-item"><input type="checkbox" id="t-elvin"><label for="t-elvin">Элвин</label></label>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="tab-pane" id="tab-reels">
+    <div class="reels-header">
+      <span class="reels-title">🎬 Рилсы для этого клиента</span>
+      <button class="btn-add-reel" type="button" onclick="addReel()">+ Добавить рилс</button>
+    </div>
+    <div id="reels-list"></div>
+    <div id="reels-empty" style="text-align:center;padding:32px;color:var(--muted);font-size:13px;">Нажмите "+ Добавить рилс" 🎥</div>
+  </div>
+  <div class="tab-pane" id="tab-notes">
+    <div class="form-grid">
+      <div class="form-full"><label>Идея / Концепция</label><textarea id="f-idea" placeholder="Идея..."></textarea></div>
+      <div class="form-full"><label>Сценарий</label><textarea id="f-script" placeholder="Сценарий или ссылка..."></textarea></div>
+      <div class="form-full"><label>Комментарии клиента</label><textarea id="f-notes" placeholder="Правки, пожелания..."></textarea></div>
+    </div>
+  </div>
+  <div class="form-actions">
+    <button class="btn-danger" id="btn-delete" type="button" onclick="deleteProject()" style="display:none">🗑 Удалить</button>
+    <button class="btn-secondary" type="button" onclick="closeModalBtn()">Отмена</button>
+    <button class="btn-primary" type="button" onclick="saveProject()">Сохранить</button>
+  </div>
+</div>
+</div>
+
+<!-- Firebase -->
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-app.js";
+import { getDatabase, ref, onValue, set, remove, push } from "https://www.gstatic.com/firebasejs/10.12.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyA_3_uOG_tuTkUaWY7bnbd3PT20bukYONE",
+  authDomain: "kaicrm-78f47.firebaseapp.com",
+  databaseURL: "https://kaicrm-78f47-default-rtdb.europe-west1.firebasedatabase.app",
+  projectId: "kaicrm-78f47",
+  storageBucket: "kaicrm-78f47.firebasestorage.app",
+  messagingSenderId: "552050205002",
+  appId: "1:552050205002:web:4b76c70ed71d15565ea1b3"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+const projectsRef = ref(db, 'projects');
+
+const STAGES=[
+  {name:'📞 Переговоры'},{name:'💡 Идея'},{name:'💰 Оплата'},{name:'🎬 Съёмка'},
+  {name:'✂️ Монтаж'},{name:'👁️ Проверка'},{name:'✅ Готово'},{name:'🗑 Удалён'},
+];
+const REEL_STAGES=[
+  {key:'approved',label:'✅ Утверждён',cls:'rs-approved'},
+  {key:'shot',label:'🎬 Отснят',cls:'rs-shot'},
+  {key:'editing',label:'✂️ Монтаж',cls:'rs-editing'},
+  {key:'review',label:'👁 Проверка',cls:'rs-review'},
+  {key:'revision',label:'✏️ Правки',cls:'rs-revision'},
+  {key:'delivered',label:'📤 Сдан',cls:'rs-delivered'},
+];
+const AV_INI={'Я (Автор)':'Я','Ян':'Я','Влад':'В','Элвин':'Э'};
+const AV_CLS={'Я (Автор)':'av-0','Ян':'av-1','Влад':'av-2','Элвин':'av-3'};
+
+let projects={}, editingId=null, currentUser='Я (Автор)', filterMember=null, searchQuery='', tempReels=[];
+let wasDragging=false, ghost=null, dragId=null, dragOrigin=null, ghostOffX=0, ghostOffY=0;
+
+// REALTIME LISTENER
+onValue(projectsRef, (snapshot) => {
+  projects = snapshot.val() || {};
+  document.getElementById('loading-screen').style.display='none';
+  setSyncOk();
+  render();
+}, (error) => {
+  console.error(error);
+  setSyncError();
+});
+
+function setSyncOk(){ document.getElementById('sync-dot').className='sync-dot ok'; document.getElementById('sync-label').textContent='Синхронизировано'; }
+function setSyncLoading(){ document.getElementById('sync-dot').className='sync-dot loading'; document.getElementById('sync-label').textContent='Сохранение...'; }
+function setSyncError(){ document.getElementById('sync-dot').className='sync-dot'; document.getElementById('sync-dot').style.background='var(--accent)'; document.getElementById('sync-label').textContent='Ошибка связи'; }
+
+async function saveToFirebase(id, data){
+  setSyncLoading();
+  try{
+    await set(ref(db, 'projects/'+id), data);
+    setSyncOk();
+  }catch(e){ setSyncError(); }
+}
+
+async function deleteFromFirebase(id){
+  setSyncLoading();
+  try{
+    await remove(ref(db, 'projects/'+id));
+    setSyncOk();
+  }catch(e){ setSyncError(); }
+}
+
+window.setUser=function(el){
+  document.querySelectorAll('.user-badge').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active'); currentUser=el.dataset.user;
+};
+
+window.switchTab=function(name,el){
+  document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p=>p.classList.remove('active'));
+  el.classList.add('active'); document.getElementById('tab-'+name).classList.add('active');
+};
+
+window.addReel=function(){
+  tempReels.push({id:'r_'+Date.now(),name:'',approved:false,shot:false,editing:false,review:false,revision:false,delivered:false});
+  renderReelsList();
+};
+window.deleteReel=function(id){ tempReels=tempReels.filter(r=>r.id!==id); renderReelsList(); };
+window.updateReelName=function(id,val){ const r=tempReels.find(r=>r.id===id); if(r)r.name=val; };
+window.toggleReelStage=function(id,key,btn){ const r=tempReels.find(r=>r.id===id); if(!r)return; r[key]=!r[key]; btn.classList.toggle('done',r[key]); };
+
+function renderReelsList(){
+  const list=document.getElementById('reels-list');
+  const empty=document.getElementById('reels-empty');
+  list.innerHTML=''; empty.style.display=tempReels.length?'none':'';
+  tempReels.forEach((reel,idx)=>{
+    const div=document.createElement('div'); div.className='reel-item';
+    div.innerHTML=`<div class="reel-top"><span class="reel-num">${idx+1}</span><input class="reel-name-input" placeholder="Название рилса..." value="${escHtml(reel.name||'')}" data-rid="${reel.id}" oninput="updateReelName('${reel.id}',this.value)"><button class="btn-del-reel" type="button" onclick="deleteReel('${reel.id}')">✕</button></div><div class="reel-stages">${REEL_STAGES.map(s=>`<button type="button" class="reel-stage-btn ${s.cls}${reel[s.key]?' done':''}" onclick="toggleReelStage('${reel.id}','${s.key}',this)"><span class="dot"></span>${s.label}</button>`).join('')}</div>`;
+    list.appendChild(div);
+  });
+}
+
+function escHtml(t){return t.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+
+function reelColor(r){
+  if(r.delivered)return '#00e5a0'; if(r.revision)return '#ffb800'; if(r.review)return '#a855f7';
+  if(r.editing)return '#ff3c5f'; if(r.shot)return '#ff7a00'; if(r.approved)return '#00b4ff'; return '#444';
+}
+
+function projectsArray(){
+  return Object.entries(projects).map(([id,p])=>({...p,id}));
+}
+
+function render(){
+  const kb=document.getElementById('kanban'); kb.innerHTML='';
+  const arr=projectsArray();
+  STAGES.forEach((s,si)=>{
+    let cards=arr.filter(p=>p.stage==si);
+    if(filterMember) cards=cards.filter(p=>p.team&&p.team.includes(filterMember));
+    if(searchQuery) cards=cards.filter(p=>p.name&&p.name.toLowerCase().includes(searchQuery));
+    const col=document.createElement('div'); col.className=`column col-${si}`;
+    col.innerHTML=`<div class="col-header"><span class="col-title">${s.name}</span><span class="col-count">${cards.length}</span></div><div class="col-body" id="col-${si}"></div>`;
+    kb.appendChild(col);
+    const body=col.querySelector('.col-body');
+    if(!cards.length){body.innerHTML=`<div class="empty-col"><div class="empty-icon">📭</div>Пусто</div>`;return;}
+    cards.forEach(p=>{
+      const el=document.createElement('div'); el.className=`proj-card stage-${si}`;
+      el.dataset.id=String(p.id); el.dataset.stage=String(si);
+      const dc=getDueClass(p.deadline),dt=p.deadline?formatDate(p.deadline):'—';
+      const pTag=p.paid==='yes'?`<span class="tag tag-paid">Оплачено</span>`:p.paid==='partial'?`<span class="tag" style="color:#ff7a00">Частично</span>`:`<span class="tag tag-nopay">Не оплачено</span>`;
+      const teamAv=(p.team||[]).map(m=>`<span class="avatar ${AV_CLS[m]||'av-0'}">${AV_INI[m]||'?'}</span>`).join('');
+      const reels=p.reels||[];
+      const dots=reels.map(r=>`<span class="reel-dot" style="background:${reelColor(r)}" title="${escHtml(r.name||'Рилс')}"></span>`).join('');
+      const rCount=reels.length?`<span class="tag" style="color:#a855f7">🎬 ${reels.length}</span>`:'';
+      el.innerHTML=`<div class="proj-name">${escHtml(p.name||'')}</div><div class="proj-meta">${escHtml(p.contact||'—')}</div><div class="proj-tags">${pTag}${rCount}${p.budget?`<span class="tag" style="color:var(--muted)">${p.budget} MDL</span>`:''}</div>${reels.length?`<div class="reels-mini">${dots}</div>`:''}<div class="proj-footer"><div class="assignees">${teamAv}</div><span class="due-date ${dc}">📅 ${dt}</span></div>`;
+      el.onclick=(e)=>{ if(!wasDragging) window.openEdit(p.id); };
+      addDragToCard(el);
+      body.appendChild(el);
+    });
+  });
+  updateStats(); updateNotifs();
+}
+
+function getDueClass(d){if(!d)return '';const diff=(new Date(d)-new Date())/86400000;return diff<0?'overdue':diff<3?'soon':'';}
+function formatDate(d){if(!d)return '—';const[y,m,day]=d.split('-');return `${day}.${m}.${y.slice(2)}`;}
+
+function updateStats(){
+  const arr=projectsArray();
+  document.getElementById('stat-total').textContent=arr.filter(p=>p.stage!==7).length;
+  document.getElementById('stat-active').textContent=arr.filter(p=>p.stage<6).length;
+  document.getElementById('stat-reels').textContent=arr.reduce((a,p)=>a+(p.reels||[]).length,0);
+  document.getElementById('stat-paid').textContent=arr.filter(p=>p.paid==='yes').length;
+  document.getElementById('stat-overdue').textContent=arr.filter(p=>p.deadline&&getDueClass(p.deadline)==='overdue').length;
+}
+
+function updateNotifs(){
+  const notifs=[], arr=projectsArray();
+  arr.filter(p=>p.stage!==7).forEach(p=>{
+    if(p.deadline){const diff=(new Date(p.deadline)-new Date())/86400000;if(diff<0)notifs.push({project:p.name,msg:`Просрочен дедлайн`,type:'urgent'});else if(diff<2)notifs.push({project:p.name,msg:`Дедлайн через ${Math.ceil(diff)} дн.`,type:'warn'});}
+    if(p.paid==='no'&&p.stage>=2)notifs.push({project:p.name,msg:'Оплата не получена',type:'urgent'});
+    (p.reels||[]).forEach(r=>{if(r.revision&&!r.delivered)notifs.push({project:p.name,msg:`"${r.name||'Рилс'}" — правки`,type:'urgent'});});
+  });
+  document.getElementById('notif-list').innerHTML=!notifs.length?'<div style="color:var(--muted);font-size:13px;text-align:center;padding:16px">Всё в порядке 🎉</div>':notifs.map(n=>`<div class="notif-item ${n.type==='urgent'?'urgent':''}" ><div class="notif-project">${escHtml(n.project)}</div><div class="notif-msg">${n.msg}</div></div>`).join('');
+  document.getElementById('notif-dot').style.display=notifs.some(n=>n.type==='urgent')?'block':'none';
+}
+
+window.toggleNotif=function(){ document.getElementById('notif-panel').classList.toggle('open'); };
+
+window.openNew=function(){
+  editingId=null;
+  document.getElementById('modal-heading').textContent='Новый клиент';
+  document.getElementById('btn-delete').style.display='none';
+  clearForm(); tempReels=[]; renderReelsList();
+  window.switchTab('info',document.getElementById('tab-btn-info'));
+  document.getElementById('modal-overlay').classList.add('open');
+};
+
+window.openEdit=function(id){
+  const p=projects[id]; if(!p) return;
+  editingId=id;
+  document.getElementById('modal-heading').textContent=p.name;
+  document.getElementById('btn-delete').style.display='';
+  fillForm({...p,id});
+  tempReels=JSON.parse(JSON.stringify(p.reels||[]));
+  renderReelsList();
+  window.switchTab('info',document.getElementById('tab-btn-info'));
+  document.getElementById('modal-overlay').classList.add('open');
+};
+
+function clearForm(){
+  ['f-name','f-contact','f-budget','f-notes','f-idea','f-script','f-shoot-date','f-deadline'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('f-stage').value='0'; document.getElementById('f-paid').value='no'; document.getElementById('f-owner').value=currentUser;
+  ['t-me','t-yan','t-vlad','t-elvin'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
+}
+
+function fillForm(p){
+  document.getElementById('f-name').value=p.name||''; document.getElementById('f-contact').value=p.contact||'';
+  document.getElementById('f-budget').value=p.budget||''; document.getElementById('f-notes').value=p.notes||'';
+  document.getElementById('f-idea').value=p.idea||''; document.getElementById('f-script').value=p.script||'';
+  document.getElementById('f-shoot-date').value=p.shootDate||''; document.getElementById('f-deadline').value=p.deadline||'';
+  document.getElementById('f-stage').value=p.stage||0; document.getElementById('f-paid').value=p.paid||'no'; document.getElementById('f-owner').value=p.owner||'Я (Автор)';
+  const tm={'Я (Автор)':'t-me','Ян':'t-yan','Влад':'t-vlad','Элвин':'t-elvin'};
+  ['t-me','t-yan','t-vlad','t-elvin'].forEach(id=>{const el=document.getElementById(id);if(el)el.checked=false;});
+  (p.team||[]).forEach(m=>{if(tm[m])document.getElementById(tm[m]).checked=true;});
+}
+
+window.saveProject=async function(){
+  const name=document.getElementById('f-name').value.trim();
+  if(!name){alert('Введите название!');return;}
+  const team=[];
+  if(document.getElementById('t-me').checked)team.push('Я (Автор)');
+  if(document.getElementById('t-yan').checked)team.push('Ян');
+  if(document.getElementById('t-vlad').checked)team.push('Влад');
+  if(document.getElementById('t-elvin').checked)team.push('Элвин');
+  document.querySelectorAll('.reel-name-input').forEach(inp=>{const r=tempReels.find(r=>r.id===inp.dataset.rid);if(r)r.name=inp.value;});
+  const data={name,contact:document.getElementById('f-contact').value,stage:+document.getElementById('f-stage').value,owner:document.getElementById('f-owner').value,team,budget:document.getElementById('f-budget').value,paid:document.getElementById('f-paid').value,shootDate:document.getElementById('f-shoot-date').value,deadline:document.getElementById('f-deadline').value,idea:document.getElementById('f-idea').value,script:document.getElementById('f-script').value,notes:document.getElementById('f-notes').value,reels:JSON.parse(JSON.stringify(tempReels)),updatedBy:currentUser,updatedAt:Date.now()};
+  const id=editingId||('p_'+Date.now());
+  await saveToFirebase(id,data);
+  closeModalBtn();
+  showToast(editingId?'✅ Сохранено':'✅ Клиент добавлен');
+};
+
+window.deleteProject=async function(){
+  if(!confirm('Удалить проект?')) return;
+  await deleteFromFirebase(editingId);
+  editingId=null; closeModalBtn();
+  showToast('🗑 Удалено');
+};
+
+window.closeModalOuter=function(e){if(e.target===document.getElementById('modal-overlay'))closeModalBtn();};
+window.closeModalBtn=function(){ document.getElementById('modal-overlay').classList.remove('open'); };
+window.filterCards=function(q){ searchQuery=q.toLowerCase(); render(); };
+window.filterMemberFn=function(member,el){ document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); el.classList.add('active'); filterMember=member; render(); };
+
+// DRAG & DROP
+function addDragToCard(el){
+  el.addEventListener('touchstart',onTouchStart,{passive:false});
+  el.addEventListener('mousedown',onMouseDown);
+}
+function onTouchStart(e){ if(e.touches.length>1)return; const t=e.touches[0]; startDrag(e.currentTarget,t.clientX,t.clientY,e); document.addEventListener('touchmove',onTouchMove,{passive:false}); document.addEventListener('touchend',onTouchEnd); }
+function onMouseDown(e){ if(e.button!==0)return; startDrag(e.currentTarget,e.clientX,e.clientY,e); document.addEventListener('mousemove',onMouseMove); document.addEventListener('mouseup',onMouseUp); }
+function startDrag(card,cx,cy,e){ dragId=card.dataset.id; dragOrigin=card.dataset.stage; wasDragging=false; const rect=card.getBoundingClientRect(); ghostOffX=cx-rect.left; ghostOffY=cy-rect.top; ghost=document.createElement('div'); ghost.className='drag-ghost'; ghost.innerHTML=card.innerHTML; ghost.style.left=(cx-ghostOffX)+'px'; ghost.style.top=(cy-ghostOffY)+'px'; ghost.style.width=rect.width+'px'; document.body.appendChild(ghost); card.classList.add('dragging'); e.preventDefault(); }
+function onMouseMove(e){ moveGhost(e.clientX,e.clientY); }
+function onTouchMove(e){ e.preventDefault(); const t=e.touches[0]; moveGhost(t.clientX,t.clientY); }
+function moveGhost(cx,cy){ if(!ghost)return; wasDragging=true; ghost.style.left=(cx-ghostOffX)+'px'; ghost.style.top=(cy-ghostOffY)+'px'; ghost.style.display='none'; const el=document.elementFromPoint(cx,cy); ghost.style.display=''; document.querySelectorAll('.col-body').forEach(c=>c.classList.remove('drag-over')); const col=el&&el.closest('.col-body'); if(col)col.classList.add('drag-over'); }
+function onMouseUp(e){ endDrag(e.clientX,e.clientY); document.removeEventListener('mousemove',onMouseMove); document.removeEventListener('mouseup',onMouseUp); }
+function onTouchEnd(e){ const t=e.changedTouches[0]; endDrag(t.clientX,t.clientY); document.removeEventListener('touchmove',onTouchMove); document.removeEventListener('touchend',onTouchEnd); }
+async function endDrag(cx,cy){
+  if(ghost){ghost.remove();ghost=null;}
+  document.querySelectorAll('.col-body').forEach(c=>c.classList.remove('drag-over'));
+  document.querySelectorAll('.proj-card').forEach(c=>c.classList.remove('dragging'));
+  if(!wasDragging||!dragId){dragId=null;return;}
+  const el=document.elementFromPoint(cx,cy);
+  const col=el&&el.closest('.column');
+  if(col){
+    const colIdx=[...document.querySelectorAll('.column')].indexOf(col);
+    if(colIdx>=0&&colIdx!==+dragOrigin){
+      const p=projects[dragId];
+      if(p){ await saveToFirebase(dragId,{...p,stage:colIdx,updatedBy:currentUser,updatedAt:Date.now()}); showToast(`→ ${STAGES[colIdx].name}`); }
+    }
+  }
+  dragId=null;
+}
+
+function showToast(msg){
+  let t=document.getElementById('toast');
+  if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:24px;left:50%;transform:translateX(-50%);background:#1e1e2e;border:1px solid var(--border);color:var(--text);padding:10px 20px;border-radius:30px;font-size:13px;font-weight:600;z-index:9999;transition:opacity .3s;box-shadow:0 8px 30px rgba(0,0,0,.5);';document.body.appendChild(t);}
+  t.textContent=msg; t.style.opacity='1';
+  clearTimeout(t._to); t._to=setTimeout(()=>t.style.opacity='0',2200);
+}
+
+document.addEventListener('click',e=>{
+  const panel=document.getElementById('notif-panel'),btn=document.getElementById('notif-btn');
+  if(!panel.contains(e.target)&&!btn.contains(e.target))panel.classList.remove('open');
+});
+
+</script>
+</body>
+</html>
