@@ -323,17 +323,12 @@ const TG_GROUP_ID = '-1003838515343';
 
 async function sendTelegram(text){
   const url = `https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
-  const send = async (chat_id) => {
-    try {
-      await fetch(url, {
-        method: 'POST',
-        headers: {'Content-Type':'application/json'},
-        body: JSON.stringify({chat_id, text, parse_mode:'HTML'})
-      });
-    } catch(e){ console.error('TG error:', e); }
+  const send = (chat_id) => {
+    const params = new URLSearchParams({chat_id, text, parse_mode:'HTML'});
+    return fetch(`${url}?${params}`, {method:'GET', mode:'no-cors'}).catch(()=>{});
   };
-  await send(TG_MY_ID);
-  await send(TG_GROUP_ID);
+  send(TG_MY_ID);
+  send(TG_GROUP_ID);
 }
 
 // Проверка дедлайнов — каждые 60 минут
