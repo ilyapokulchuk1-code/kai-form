@@ -39,7 +39,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .pin-timer{font-size:13px;color:var(–accent);font-weight:700;margin-top:8px;}
 
 /* ─── LOADING ─── */
-#loading{position:fixed;inset:0;background:var(–bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:999;gap:18px;}
+#loading{position:fixed;inset:0;background:var(–bg);display:flex;flex-direction:column;align-items:center;justify-content:center;z-index:9999;gap:18px;}
 .l-logo{font-family:‘Bebas Neue’,cursive;font-size:52px;letter-spacing:4px;color:var(–accent);}
 .l-logo span{color:var(–text);}
 .l-bar{width:200px;height:3px;background:var(–border);border-radius:2px;overflow:hidden;}
@@ -55,19 +55,17 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .ntab:hover{color:var(–text);background:var(–tag);}
 .ntab.active{background:var(–accent);color:#fff;}
 .nav-right{display:flex;align-items:center;gap:6px;flex-shrink:0;}
+.ubadge{background:var(–tag);border:1px solid var(–border);border-radius:20px;padding:4px 11px;font-size:11px;font-weight:600;cursor:pointer;transition:all .18s;}
+.ubadge:hover{border-color:var(–accent);color:var(–accent);}
+.ubadge.active{background:var(–accent);border-color:var(–accent);color:#fff;}
 .sync{display:flex;align-items:center;gap:5px;font-size:10px;color:var(–muted);}
 .sdot{width:6px;height:6px;border-radius:50%;background:var(–muted);flex-shrink:0;}
 .sdot.ok{background:var(–accent3);}
 .sdot.loading{background:var(–accent2);animation:pulse 1s infinite;}
 @keyframes pulse{0%,100%{opacity:1}50%{opacity:.25}}
-.who-badge{background:var(–tag);border:1px solid var(–border);border-radius:20px;padding:4px 12px;font-size:11px;font-weight:700;display:flex;align-items:center;gap:6px;}
-.who-dot{width:7px;height:7px;border-radius:50%;background:var(–accent);}
 #notif-btn{background:var(–tag);border:1px solid var(–border);border-radius:20px;padding:4px 11px;font-size:12px;cursor:pointer;position:relative;transition:all .18s;}
+#notif-btn:hover{border-color:var(–accent2);}
 .ndot{position:absolute;top:2px;right:2px;width:6px;height:6px;border-radius:50%;background:var(–accent);display:none;}
-.btn-nav{background:var(–tag);border:1px solid var(–border);color:var(–text);border-radius:20px;padding:4px 11px;font-size:11px;cursor:pointer;font-family:‘DM Sans’,sans-serif;transition:all .18s;}
-.btn-nav:hover{border-color:var(–accent3);color:var(–accent3);}
-.btn-logout{background:transparent;border:1px solid var(–border);color:var(–muted);border-radius:20px;padding:4px 11px;font-size:11px;cursor:pointer;font-family:‘DM Sans’,sans-serif;transition:all .18s;}
-.btn-logout:hover{border-color:var(–accent);color:var(–accent);}
 
 /* ─── PAGES ─── */
 .page{display:none;padding:16px;}
@@ -84,7 +82,7 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 /* ─── TOOLBAR ─── */
 .toolbar{display:flex;gap:7px;margin-bottom:14px;flex-wrap:wrap;align-items:center;}
 .btn-p{background:var(–accent);color:#fff;border:none;border-radius:8px;padding:8px 16px;font:600 12px ‘DM Sans’,sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;}
-.btn-p:hover{background:#e6002e;}
+.btn-p:hover{background:#e6002e;transform:translateY(-1px);}
 .btn-o{background:transparent;border:1px solid var(–border);color:var(–muted);border-radius:8px;padding:7px 13px;font:500 11px ‘DM Sans’,sans-serif;cursor:pointer;transition:all .18s;white-space:nowrap;}
 .btn-o:hover{border-color:var(–accent);color:var(–text);}
 .btn-o.active{border-color:var(–accent);color:var(–accent);background:rgba(255,51,85,.07);}
@@ -107,21 +105,15 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .rcard.dragging{opacity:.2;}
 .rtitle{font-size:12px;font-weight:700;margin-bottom:3px;line-height:1.3;}
 .rclient{font-size:10px;color:var(–accent3);font-weight:600;margin-bottom:5px;cursor:pointer;}
+.rclient:hover{color:#00ffaa;text-decoration:underline;}
 .rtags{display:flex;gap:3px;flex-wrap:wrap;margin-bottom:5px;}
 .tag{background:var(–tag);border-radius:4px;padding:2px 5px;font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.3px;}
-.rfoot{display:flex;align-items:center;justify-content:space-between;margin-top:4px;}
+.rfoot{display:flex;align-items:center;justify-content:space-between;}
+.rprice{font-size:10px;color:var(–accent2);font-weight:700;}
 .rassign{width:18px;height:18px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:8px;font-weight:700;flex-shrink:0;}
 .av0{background:#ff3355;color:#fff;}.av1{background:#ffb800;color:#000;}.av2{background:#00d98b;color:#000;}.av3{background:#7c5cfc;color:#fff;}
 .tbadge{font-size:9px;font-weight:700;color:var(–accent2);}
 .tbadge.od{color:var(–accent);}
-
-/* DEADLINE BADGE */
-.dbadge{display:inline-flex;align-items:center;gap:3px;border-radius:5px;padding:2px 6px;font-size:9px;font-weight:700;margin-bottom:4px;}
-.db-green{background:rgba(0,217,139,.12);color:var(–accent3);border:1px solid rgba(0,217,139,.25);}
-.db-yellow{background:rgba(255,184,0,.12);color:var(–accent2);border:1px solid rgba(255,184,0,.25);}
-.db-red{background:rgba(255,51,85,.12);color:var(–accent);border:1px solid rgba(255,51,85,.25);}
-.db-over{background:rgba(255,51,85,.25);color:var(–accent);border:1px solid var(–accent);animation:blink 1.5s infinite;}
-@keyframes blink{0%,100%{opacity:1}50%{opacity:.5}}
 
 .s0::before{background:var(–s0);}.kc0 .ktitle{color:var(–s0);}
 .s1::before{background:var(–s1);}.kc1 .ktitle{color:var(–s1);}
@@ -151,34 +143,27 @@ body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);min
 .cfinv{font-size:12px;font-weight:700;}
 .creelchips{display:flex;gap:4px;flex-wrap:wrap;margin-top:8px;}
 .rchip{background:var(–tag);border-radius:4px;padding:3px 7px;font-size:10px;font-weight:600;cursor:pointer;border-left:3px solid #444;}
+.rchip:hover{opacity:.75;}
 
 /* ─── TRASH ─── */
 .tgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px;}
 .tcard{background:var(–surface);border:1px solid var(–border);border-radius:10px;padding:12px;opacity:.55;}
 .tactions{display:flex;gap:6px;margin-top:10px;}
-.btn-restore{background:rgba(0,217,139,.1);border:1px solid var(–accent3);color:var(–accent3);border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:‘DM Sans’,sans-serif;}
-.btn-pdel{background:rgba(255,51,85,.1);border:1px solid var(–accent);color:var(–accent);border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:‘DM Sans’,sans-serif;}
-
-/* ─── ANALYTICS ─── */
-.an-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:10px;margin-bottom:16px;}
-.an-card{background:var(–surface);border:1px solid var(–border);border-radius:10px;padding:14px;text-align:center;}
-.an-num{font-family:‘Bebas Neue’,cursive;font-size:32px;line-height:1;}
-.an-lbl{font-size:9px;color:var(–muted);text-transform:uppercase;letter-spacing:1px;margin-top:3px;}
-.month-row{display:flex;align-items:center;gap:10px;padding:8px 10px;background:var(–surface);border-radius:7px;margin-bottom:5px;}
-.month-name{font-size:12px;font-weight:600;min-width:80px;}
-.month-bar-wrap{flex:1;height:4px;background:var(–border);border-radius:2px;overflow:hidden;}
-.month-bar{height:100%;background:linear-gradient(90deg,var(–accent3),var(–accent2));border-radius:2px;}
-.month-amt{font-size:12px;font-weight:700;color:var(–accent3);min-width:80px;text-align:right;}
+.btn-restore{background:rgba(0,217,139,.1);border:1px solid var(–accent3);color:var(–accent3);border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:‘DM Sans’,sans-serif;transition:all .18s;}
+.btn-restore:hover{background:rgba(0,217,139,.2);}
+.btn-pdel{background:rgba(255,51,85,.1);border:1px solid var(–accent);color:var(–accent);border-radius:6px;padding:5px 11px;font-size:11px;cursor:pointer;font-family:‘DM Sans’,sans-serif;transition:all .18s;}
+.btn-pdel:hover{background:rgba(255,51,85,.2);}
 
 /* ─── MODAL ─── */
 .overlay{position:fixed;inset:0;background:rgba(0,0,0,.82);z-index:200;display:none;align-items:flex-start;justify-content:center;padding:12px;backdrop-filter:blur(5px);overflow-y:auto;}
 .overlay.open{display:flex;}
 .modal{background:var(–card);border:1px solid var(–border2);border-radius:16px;width:100%;max-width:660px;padding:22px;position:relative;box-shadow:0 28px 90px rgba(0,0,0,.7);margin:auto;}
 .modal-title{font-family:‘Bebas Neue’,cursive;font-size:26px;letter-spacing:1px;margin-bottom:14px;}
-.close-btn{position:absolute;top:14px;right:14px;background:var(–tag);border:1px solid var(–border);color:var(–muted);border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;}
+.close-btn{position:absolute;top:14px;right:14px;background:var(–tag);border:1px solid var(–border);color:var(–muted);border-radius:7px;width:28px;height:28px;cursor:pointer;font-size:14px;display:flex;align-items:center;justify-content:center;transition:all .18s;}
 .close-btn:hover{border-color:var(–accent);color:var(–accent);}
 .mtabs{display:flex;gap:1px;margin-bottom:18px;border-bottom:1px solid var(–border);}
 .tbtn{background:none;border:none;color:var(–muted);font:600 11px ‘DM Sans’,sans-serif;padding:8px 14px;cursor:pointer;border-bottom:2px solid transparent;margin-bottom:-1px;transition:all .18s;text-transform:uppercase;letter-spacing:.5px;}
+.tbtn:hover{color:var(–text);}
 .tbtn.active{color:var(–accent);border-bottom-color:var(–accent);}
 .tpane{display:none;}
 .tpane.active{display:block;}
@@ -190,8 +175,9 @@ input:focus,select:focus,textarea:focus{border-color:var(–accent);}
 textarea{resize:vertical;min-height:64px;}
 select option{background:var(–card);}
 .mactions{display:flex;gap:8px;margin-top:18px;justify-content:flex-end;}
-.btn-s{background:transparent;border:1px solid var(–border);color:var(–muted);border-radius:7px;padding:8px 16px;font:400 12px ‘DM Sans’,sans-serif;cursor:pointer;}
-.btn-d{background:transparent;border:1px solid rgba(255,51,85,.3);color:var(–accent);border-radius:7px;padding:8px 16px;font:400 12px ‘DM Sans’,sans-serif;cursor:pointer;margin-right:auto;}
+.btn-s{background:transparent;border:1px solid var(–border);color:var(–muted);border-radius:7px;padding:8px 16px;font:400 12px ‘DM Sans’,sans-serif;cursor:pointer;transition:all .18s;}
+.btn-s:hover{border-color:var(–muted2);color:var(–text);}
+.btn-d{background:transparent;border:1px solid rgba(255,51,85,.3);color:var(–accent);border-radius:7px;padding:8px 16px;font:400 12px ‘DM Sans’,sans-serif;cursor:pointer;margin-right:auto;transition:all .18s;}
 .btn-d:hover{background:rgba(255,51,85,.1);}
 
 /* ─── FINANCE SUMMARY ─── */
@@ -211,7 +197,8 @@ select option{background:var(–card);}
 .ttxt.done{text-decoration:line-through;color:var(–muted);}
 .tmeta{font-size:10px;color:var(–muted);margin-top:2px;}
 .tmeta.od{color:var(–accent);}
-.btn-atask{background:var(–tag);border:1px solid var(–border);color:var(–accent3);border-radius:7px;padding:5px 11px;font-size:11px;font-weight:600;cursor:pointer;font-family:‘DM Sans’,sans-serif;margin-top:8px;}
+.btn-atask{background:var(–tag);border:1px solid var(–border);color:var(–accent3);border-radius:7px;padding:5px 11px;font-size:11px;font-weight:600;cursor:pointer;font-family:‘DM Sans’,sans-serif;margin-top:8px;transition:all .18s;}
+.btn-atask:hover{border-color:var(–accent3);}
 .atf{background:var(–surface);border-radius:8px;padding:10px;margin-top:8px;display:none;}
 .atf.open{display:block;}
 
@@ -232,45 +219,13 @@ select option{background:var(–card);}
 </head>
 <body>
 
-<!-- PIN SCREEN -->
-
-<div id="pin-screen">
-  <div class="pin-box">
-    <div class="pin-logo">KAI<span>CRM</span></div>
-    <div class="pin-sub" id="pin-sub">Введите PIN-код</div>
-    <div class="pin-dots">
-      <div class="pdot" id="pd0"></div><div class="pdot" id="pd1"></div>
-      <div class="pdot" id="pd2"></div><div class="pdot" id="pd3"></div>
-    </div>
-    <div class="numpad" id="numpad">
-      <button class="nbtn" onclick="pinPress('1')">1</button>
-      <button class="nbtn" onclick="pinPress('2')">2</button>
-      <button class="nbtn" onclick="pinPress('3')">3</button>
-      <button class="nbtn" onclick="pinPress('4')">4</button>
-      <button class="nbtn" onclick="pinPress('5')">5</button>
-      <button class="nbtn" onclick="pinPress('6')">6</button>
-      <button class="nbtn" onclick="pinPress('7')">7</button>
-      <button class="nbtn" onclick="pinPress('8')">8</button>
-      <button class="nbtn" onclick="pinPress('9')">9</button>
-      <button class="nbtn zero" onclick="pinPress('0')">0</button>
-      <button class="nbtn del" onclick="pinDel()">⌫</button>
-    </div>
-    <div class="pin-err" id="pin-err"></div>
-    <div class="pin-timer" id="pin-timer"></div>
-  </div>
-</div>
-
-<!-- LOADING -->
-
-<div id="loading" style="display:none">
+<div id="loading">
   <div class="l-logo">KAI<span>CRM</span></div>
   <div class="l-bar"><div class="l-fill"></div></div>
   <div style="font-size:11px;color:var(--muted)">Подключение...</div>
 </div>
 
-<!-- NAV -->
-
-<nav class="nav" id="main-nav" style="display:none">
+<nav class="nav">
   <div style="display:flex;align-items:center;gap:10px;">
     <div class="logo">KAI<span>CRM</span></div>
     <div class="nav-tabs">
@@ -304,16 +259,12 @@ select option{background:var(–card);}
   </div>
 </nav>
 
-<!-- NOTIF PANEL -->
-
 <div class="npanel" id="npanel">
   <div class="ntitle">⚡ Требуют внимания</div>
   <div id="nlist"></div>
 </div>
 
-<!-- ═══ PAGE: REELS ═══ -->
-
-<div class="page active" id="p-reels" style="display:none">
+<div class="page active" id="p-reels">
 <div class="wrap">
   <div class="fbar" id="fbar">
     <div class="fcard">
@@ -350,9 +301,7 @@ select option{background:var(–card);}
 </div>
 </div>
 
-<!-- ═══ PAGE: CLIENTS ═══ -->
-
-<div class="page" id="p-clients" style="display:none">
+<div class="page" id="p-clients">
 <div class="wrap">
   <div class="toolbar">
     <button class="btn-primary" onclick="openNew()">+ Новый клиент</button>
@@ -366,9 +315,7 @@ select option{background:var(–card);}
   <div class="kanban" id="kanban"></div>
 </div>
 
-<!-- ═══ PAGE: TRASH ═══ -->
-
-<div class="page" id="p-trash" style="display:none">
+<div class="page" id="p-trash">
 <div class="wrap">
   <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
     <div style="font-size:13px;font-weight:600;">🗑 Корзина — удалённые рилсы</div>
@@ -378,7 +325,7 @@ select option{background:var(–card);}
 </div>
 </div>
 
-<!-- ═══ REEL MODAL ═══ -->
+<!-- REEL MODAL -->
 
 <div class="overlay" id="rov" onclick="closeReelOuter(event)">
 <div class="modal">
@@ -454,7 +401,7 @@ select option{background:var(–card);}
 </div>
 </div>
 
-<!-- ═══ CLIENT MODAL ═══ -->
+<!-- CLIENT MODAL -->
 
 <div class="overlay" id="cov" onclick="closeClientOuter(event)">
 <div class="modal">
@@ -500,134 +447,11 @@ select option{background:var(–card);}
 </div>
 </div>
 
-<!-- ANALYTICS MODAL -->
-
-<div class="overlay" id="an-ov" onclick="if(event.target===this)this.classList.remove('open')">
-<div class="modal">
-  <button class="close-btn" onclick="document.getElementById('an-ov').classList.remove('open')">✕</button>
-  <div class="modal-title">📊 Аналитика</div>
-  <div class="an-grid" id="an-grid"></div>
-  <div style="font-size:9px;text-transform:uppercase;letter-spacing:1px;color:var(--muted);margin-bottom:8px;font-weight:700;">Доход по месяцам (MDL)</div>
-  <div id="an-months"></div>
-</div>
-</div>
-
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-app-compat.js"></script>
 
 <script src="https://www.gstatic.com/firebasejs/10.12.0/firebase-database-compat.js"></script>
 
 <script>
-// ══ ПОЛЬЗОВАТЕЛИ ══
-const USERS={
-  '1441':{name:'Илья', canSeeMoney:true, canDelete:true, seeAll:true},
-  '2811':{name:'Ян',   canSeeMoney:true, canDelete:true, seeAll:true},
-  '8282':{name:'Влад', canSeeMoney:false,canDelete:false,seeAll:false},
-  '1010':{name:'Элвин',canSeeMoney:false,canDelete:false,seeAll:false},
-};
-const JOKES=[
-  '🤡 Серьёзно? Ты не помнишь свой PIN?',
-  '🕵️ О, шпион! Думаешь мы не видим тебя?',
-  '🧠 Третья попытка... Может записать на руке?',
-  '😂 Ты точно не взломщик — слишком медленно!',
-  '🔒 Ещё одна и система взорвётся... шутка. Или нет?',
-];
-
-// ══ PIN ══
-let pinBuf='', currentUser=null;
-function getBlockedUntil(){ return parseInt(localStorage.getItem('kai_blocked_until')||'0'); }
-function setBlockedUntil(t){ localStorage.setItem('kai_blocked_until',String(t)); }
-function getFailCount(){ return parseInt(localStorage.getItem('kai_fails')||'0'); }
-function setFailCount(n){ localStorage.setItem('kai_fails',String(n)); }
-
-function checkBlockOnLoad(){
-  const until=getBlockedUntil();
-  if(until>Date.now()){ startBlockCountdown(until); return true; }
-  return false;
-}
-function startBlockCountdown(until){
-  document.getElementById('numpad').style.opacity='.3';
-  document.getElementById('numpad').style.pointerEvents='none';
-  document.getElementById('pin-sub').textContent='🔒 Заблокировано';
-  const tick=()=>{
-    const left=Math.ceil((until-Date.now())/1000);
-    if(left<=0){
-      document.getElementById('numpad').style.opacity='1';
-      document.getElementById('numpad').style.pointerEvents='';
-      document.getElementById('pin-sub').textContent='Введите PIN-код';
-      document.getElementById('pin-timer').textContent='';
-      document.getElementById('pin-err').textContent='';
-      setFailCount(0); setBlockedUntil(0); return;
-    }
-    document.getElementById('pin-timer').textContent=`Попробуйте через ${left} сек.`;
-    setTimeout(tick,1000);
-  };
-  tick();
-}
-
-window.pinPress=function(d){
-  if(getBlockedUntil()>Date.now())return;
-  if(pinBuf.length>=4)return;
-  pinBuf+=d; updateDots();
-  if(pinBuf.length===4) setTimeout(checkPin,120);
-};
-window.pinDel=function(){
-  if(getBlockedUntil()>Date.now())return;
-  pinBuf=pinBuf.slice(0,-1); updateDots();
-  document.getElementById('pin-err').textContent='';
-};
-function updateDots(){ for(let i=0;i<4;i++) document.getElementById('pd'+i).classList.toggle('filled',i<pinBuf.length); }
-
-function checkPin(){
-  const user=USERS[pinBuf];
-  if(user){
-    setFailCount(0); setBlockedUntil(0);
-    currentUser=user;
-    document.getElementById('pin-screen').style.display='none';
-    document.getElementById('loading').style.display='flex';
-    document.getElementById('who-name').textContent=user.name;
-    applyPermissions();
-    initFirebase();
-  } else {
-    const fails=getFailCount()+1; setFailCount(fails);
-    document.querySelectorAll('.pdot').forEach(d=>{d.classList.add('shake');setTimeout(()=>d.classList.remove('shake'),400);});
-    if(fails>=5){
-      const until=Date.now()+5*60*1000; setBlockedUntil(until);
-      document.getElementById('pin-err').className='pin-err';
-      document.getElementById('pin-err').textContent='🚨 5 попыток! Блокировка на 5 минут.';
-      startBlockCountdown(until);
-    } else {
-      const joke=JOKES[Math.min(fails-1,JOKES.length-1)];
-      document.getElementById('pin-err').className='pin-err'+(5-fails<=2?' ':' yellow');
-      document.getElementById('pin-err').textContent=`${joke} (осталось ${5-fails})`;
-    }
-    pinBuf=''; setTimeout(updateDots,400);
-  }
-}
-
-function applyPermissions(){
-  const show=currentUser.canSeeMoney;
-  document.getElementById('fbar').style.display=show?'':'none';
-  document.getElementById('btn-analytics').style.display=show?'':'none';
-  document.getElementById('btn-export').style.display=show?'':'none';
-}
-
-window.doLogout=function(){
-  currentUser=null; pinBuf=''; updateDots();
-  document.getElementById('pin-err').textContent='';
-  document.getElementById('pin-sub').textContent='Введите PIN-код';
-  document.getElementById('main-nav').style.display='none';
-  document.querySelectorAll('.page').forEach(p=>p.style.display='none');
-  document.getElementById('pin-screen').style.display='flex';
-};
-
-document.addEventListener('keydown',e=>{
-  if(document.getElementById('pin-screen').style.display==='none')return;
-  if(e.key>='0'&&e.key<='9')pinPress(e.key);
-  if(e.key==='Backspace')pinDel();
-});
-checkBlockOnLoad();
-
-// ══ FIREBASE ══
 firebase.initializeApp({
   apiKey:"AIzaSyA_3_uOG_tuTkUaWY7bnbd3PT20bukYONE",
   authDomain:"kaicrm-78f47.firebaseapp.com",
@@ -639,69 +463,44 @@ firebase.initializeApp({
 });
 const DB=firebase.database();
 
-function initFirebase(){
-  async function fbSet(path,data){ syncLoad(); try{await DB.ref(path).set(data);syncOk();}catch(e){console.error(e);} }
-  async function fbDel(path){ syncLoad(); try{await DB.ref(path).remove();syncOk();}catch(e){console.error(e);} }
-  window._fbSet=fbSet; window._fbDel=fbDel;
+async function fbSet(path,data){syncLoad();try{await DB.ref(path).set(data);syncOk();}catch(e){console.error(e);}}
+async function fbDel(path){syncLoad();try{await DB.ref(path).remove();syncOk();}catch(e){console.error(e);}}
+function syncOk(){document.getElementById('sdot').className='sdot ok';document.getElementById('slabel').textContent='Синхр.';}
+function syncLoad(){document.getElementById('sdot').className='sdot loading';document.getElementById('slabel').textContent='...';}
 
-  DB.ref('reels').on('value',s=>{ reels=s.val()||{}; renderAll(); });
-  DB.ref('clients').on('value',s=>{ clients=s.val()||{}; renderAll(); });
-  DB.ref('trash').on('value',s=>{ trash=s.val()||{}; renderTrash(); });
-  DB.ref('reels').once('value',()=>{
-    document.getElementById('loading').style.display='none';
-    document.getElementById('main-nav').style.display='flex';
-    document.querySelectorAll('.page').forEach(p=>p.style.display='');
-    document.getElementById('p-reels').classList.add('active');
-    syncOk();
-    setTimeout(checkDeadlines,3000);
-  });
-}
-
-function syncOk(){ document.getElementById('sdot').className='sdot ok'; document.getElementById('slabel').textContent='Синхр.'; }
-function syncLoad(){ document.getElementById('sdot').className='sdot loading'; document.getElementById('slabel').textContent='...'; }
-
-// ══ TELEGRAM ══
 const TG_TOKEN='8680116612:AAELx_GE0EV8R9ZUw2yOEqT0E1w3SHLGD7w';
-const TG_MY='325056880', TG_GRP='-1003838515343';
+const TG_MY='325056880',TG_GRP='-1003838515343';
 function sendTG(text){
   const url=`https://api.telegram.org/bot${TG_TOKEN}/sendMessage`;
   [TG_MY,TG_GRP].forEach(id=>fetch(`${url}?chat_id=${id}&text=${encodeURIComponent(text)}&parse_mode=HTML`,{mode:'no-cors'}).catch(()=>{}));
 }
 
-// ══ STATE ══
 const STAGES=['✍️ Сценарий','✏️ Правки сцен.','✅ Утверждён','📅 Дата съёмки','✂️ Монтаж','🔄 Правки монтаж','🎉 Принято'];
-const MONTHS=['Янв','Фев','Мар','Апр','Май','Июн','Июл','Авг','Сен','Окт','Ноя','Дек'];
-const AVCLS={Илья:'av0',Ян:'av1',Влад:'av2',Элвин:'av3'};
-const AVINI={Илья:'И',Ян:'Я',Влад:'В',Элвин:'Э'};
+const AVCLS={'Я (Автор)':'av0','Ян':'av1','Влад':'av2','Элвин':'av3'};
+const AVINI={'Я (Автор)':'Я','Ян':'Я','Влад':'В','Элвин':'Э'};
 
 let reels={},clients={},trash={};
 let editRId=null,editCId=null;
-let fMember=null,rSearch='',cSearch='';
+let curUser='Я (Автор)',fMember=null,rSearch='',cSearch='';
 let tempTasks=[],presetCId=null;
 let wasDrag=false,ghost=null,dragId=null,dragOrig=null,gOffX=0,gOffY=0;
 
-// ══ HELPERS ══
-function reelsArr(){ return Object.entries(reels).map(([id,r])=>({...r,id})); }
-function clientsArr(){ return Object.entries(clients).map(([id,c])=>({...c,id})); }
-function getCName(cid){ return clients[cid]?.name||'—'; }
-function esc(t){ return (t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;'); }
-function mdl(n){ return Number(n||0).toLocaleString()+' MDL'; }
-function fmtDate(d){ if(!d)return'—';const[y,m,day]=d.split('-');return`${day}.${m}.${y.slice(2)}`; }
-function diffDays(d){ if(!d)return null; return(new Date(d)-new Date())/86400000; }
-function clientSpent(cid){ return reelsArr().filter(r=>r.clientId===cid&&r.stage===6).reduce((a,r)=>a+(+r.price||0),0); }
-function stageColor(s){ return['#7c5cfc','#ff7a00','#00b4ff','#ffb800','#ff3355','#a855f7','#00d98b'][s]||'#444'; }
+DB.ref('reels').on('value',s=>{reels=s.val()||{};renderAll();});
+DB.ref('clients').on('value',s=>{clients=s.val()||{};renderAll();});
+DB.ref('trash').on('value',s=>{trash=s.val()||{};renderTrash();});
+DB.ref('reels').once('value',()=>{document.getElementById('loading').style.display='none';syncOk();});
 
-function deadlineBadge(deadline){
-  if(!deadline)return'';
-  const d=diffDays(deadline);
-  if(d===null)return'';
-  if(d<0)return`<div class="dbadge db-over">🚨 Просрочено</div>`;
-  if(d<1)return`<div class="dbadge db-red">🔴 Завтра</div>`;
-  if(d<2)return`<div class="dbadge db-yellow">🟡 ${Math.ceil(d)} дн.</div>`;
-  return`<div class="dbadge db-green">🟢 ${Math.ceil(d)} дн.</div>`;
-}
+function reelsArr(){return Object.entries(reels).map(([id,r])=>({...r,id}));}
+function clientsArr(){return Object.entries(clients).map(([id,c])=>({...c,id}));}
+function getCName(cid){return clients[cid]?.name||'—';}
+function esc(t){return(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function mdl(n){return Number(n||0).toLocaleString()+' MDL';}
+function fmtDate(d){if(!d)return'—';const[y,m,day]=d.split('-');return`${day}.${m}.${y.slice(2)}`;}
+function dueClass(d){if(!d)return'';const diff=(new Date(d)-new Date())/86400000;return diff<0?'od':diff<2?'soon':'';}
+function clientSpent(cid){return reelsArr().filter(r=>r.clientId===cid&&r.stage===6).reduce((a,r)=>a+(+r.price||0),0);}
+function clientAdvLeft(cid){return(+(clients[cid]?.advance||0))-clientSpent(cid);}
+function stageColor(s){return['#7c5cfc','#ff7a00','#00b4ff','#ffb800','#ff3355','#a855f7','#00d98b'][s]||'#444';}
 
-// ══ NAV ══
 window.showPage=function(id,el){
   document.querySelectorAll('.page').forEach(p=>p.classList.remove('active'));
   document.querySelectorAll('.ntab').forEach(b=>b.classList.remove('active'));
@@ -710,7 +509,13 @@ window.showPage=function(id,el){
   if(id==='p-clients')renderClients();
   if(id==='p-trash')renderTrash();
 };
-window.toggleNotif=function(){ document.getElementById('npanel').classList.toggle('open'); };
+
+window.setUser=function(el){
+  document.querySelectorAll('.ubadge').forEach(b=>b.classList.remove('active'));
+  el.classList.add('active');curUser=el.dataset.user;
+};
+
+window.toggleNotif=function(){document.getElementById('npanel').classList.toggle('open');};
 
 window.switchTab=function(modal,name,el){
   const rp=modal==='reel'?'rt-':'ct-';
@@ -721,26 +526,23 @@ window.switchTab=function(modal,name,el){
   el.classList.add('active');
 };
 
-// ══ RENDER ══
-function renderAll(){ renderKanban(); renderClients(); renderFinBar(); updateNotifs(); }
+function renderAll(){renderKanban();renderClients();renderFinBar();updateNotifs();}
 
-function render(){
-  const kb=document.getElementById('kanban'); kb.innerHTML='';
+function renderKanban(){
+  const kb=document.getElementById('kanban');kb.innerHTML='';
   let arr=reelsArr().filter(r=>!r.deleted);
-  if(!currentUser.seeAll) arr=arr.filter(r=>r.owner===currentUser.name);
-  if(fMember) arr=arr.filter(r=>r.owner===fMember);
-  if(rSearch) arr=arr.filter(r=>(r.name||'').toLowerCase().includes(rSearch)||(getCName(r.clientId)).toLowerCase().includes(rSearch));
-
+  if(fMember)arr=arr.filter(r=>r.owner===fMember);
+  if(rSearch)arr=arr.filter(r=>(r.name||'').toLowerCase().includes(rSearch)||(getCName(r.clientId)).toLowerCase().includes(rSearch));
   STAGES.forEach((s,si)=>{
     const cards=arr.filter(r=>r.stage==si);
-    const col=document.createElement('div'); col.className=`kcol kc${si}`;
+    const col=document.createElement('div');col.className=`kcol kc${si}`;
     col.innerHTML=`<div class="khead"><span class="ktitle">${s}</span><span class="kcount">${cards.length}</span></div><div class="kbody" id="kb-${si}"></div>`;
     kb.appendChild(col);
     const body=col.querySelector('.kbody');
     if(!cards.length){body.innerHTML='<div class="empty-col"><div class="empty-icon">📭</div>Пусто</div>';return;}
     cards.forEach(r=>{
-      const el=document.createElement('div'); el.className=`rcard s${si}`;
-      el.dataset.id=r.id; el.dataset.stage=si;
+      const el=document.createElement('div');el.className=`rcard s${si}`;
+      el.dataset.id=r.id;el.dataset.stage=si;
       const tasks=r.tasks||[];
       const open=tasks.filter(t=>!t.done);
       const od=open.filter(t=>t.due&&diffDays(t.due)<0);
@@ -757,7 +559,7 @@ function render(){
           <span style="font-size:9px;color:var(--muted)">📅 ${fmtDate(r.deadline)}</span>
         </div>`;
       el.onclick=e=>{if(!wasDrag)openEditReel(r.id);};
-      addDrag(el); body.appendChild(el);
+      addDrag(el);body.appendChild(el);
     });
   });
   updateStats(); updateNotifs();
@@ -769,13 +571,12 @@ function renderFinBar(){
   document.getElementById('f-inwork').textContent=arr.filter(r=>r.stage<6).reduce((a,r)=>a+(+r.price||0),0).toLocaleString();
   document.getElementById('f-earned').textContent=arr.filter(r=>r.stage===6).reduce((a,r)=>a+(+r.price||0),0).toLocaleString();
   document.getElementById('f-count').textContent=arr.length;
-  document.getElementById('f-overdue').textContent=arr.filter(r=>r.deadline&&diffDays(r.deadline)<0&&r.stage<6).length;
+  document.getElementById('f-overdue').textContent=arr.filter(r=>r.deadline&&dueClass(r.deadline)==='od'&&r.stage<6).length;
 }
 
 function renderClients(){
   const grid=document.getElementById('cgrid');if(!grid)return;
   let arr=clientsArr();
-  if(!currentUser.seeAll)arr=arr.filter(c=>reelsArr().some(r=>r.clientId===c.id&&r.owner===currentUser.name));
   if(cSearch)arr=arr.filter(c=>(c.name||'').toLowerCase().includes(cSearch));
   if(!arr.length){grid.innerHTML='<div style="color:var(--muted);padding:20px">Клиентов пока нет</div>';return;}
   grid.innerHTML='';
@@ -784,20 +585,21 @@ function renderClients(){
     const active=cr.filter(r=>r.stage<6);
     const done=cr.filter(r=>r.stage===6);
     const spent=clientSpent(c.id);
-    const advLeft=(+c.advance||0)-spent;
+    const advLeft=clientAdvLeft(c.id);
     const el=document.createElement('div');el.className='ccard';
-    const finHtml=currentUser.canSeeMoney?`<div class="cfinrow">
-      <div class="cfin"><div class="cfinl">Бюджет</div><div class="cfinv">${mdl(c.budget)}</div></div>
-      <div class="cfin"><div class="cfinl">Аванс</div><div class="cfinv" style="color:var(--accent2)">${mdl(c.advance)}</div></div>
-      <div class="cfin"><div class="cfinl">Остаток</div><div class="cfinv" style="color:${advLeft<0?'var(--accent)':'var(--accent3)'}">${mdl(advLeft)}</div></div>
-    </div>`:'';
     const chips=cr.length?`<div class="creelchips">${cr.map(r=>`<span class="rchip" style="border-left-color:${stageColor(r.stage)}" onclick="event.stopPropagation();openEditReel('${r.id}')">${esc(r.name||'Рилс')}</span>`).join('')}</div>`:'';
     el.innerHTML=`<div class="cname">${esc(c.name)}</div><div class="ccontact">${esc(c.phone||'')}${c.ig?' · '+esc(c.ig):''}</div>
       <div class="cstats">
         <div class="cstat"><div class="cstatv" style="color:#a855f7">${cr.length}</div><div class="cstatl">Рилсов</div></div>
         <div class="cstat"><div class="cstatv" style="color:var(--accent2)">${active.length}</div><div class="cstatl">В работе</div></div>
         <div class="cstat"><div class="cstatv" style="color:var(--accent3)">${done.length}</div><div class="cstatl">Принято</div></div>
-      </div>${finHtml}${chips}`;
+      </div>
+      <div class="cfinrow">
+        <div class="cfin"><div class="cfinl">Бюджет</div><div class="cfinv">${mdl(c.budget)}</div></div>
+        <div class="cfin"><div class="cfinl">Аванс</div><div class="cfinv" style="color:var(--accent2)">${mdl(c.advance)}</div></div>
+        <div class="cfin"><div class="cfinl">Остаток</div><div class="cfinv" style="color:${advLeft<0?'var(--accent)':'var(--accent3)'}">${mdl(advLeft)}</div></div>
+      </div>
+      ${chips}`;
     el.onclick=()=>openEditClient(c.id);
     grid.appendChild(el);
   });
@@ -810,10 +612,11 @@ function renderTrash(){
   grid.innerHTML='';
   arr.forEach(([id,r])=>{
     const el=document.createElement('div');el.className='tcard';
-    el.innerHTML=`<div style="font-size:13px;font-weight:700;margin-bottom:4px">${esc(r.name||'Без названия')}</div>
+    el.innerHTML=`
+      <div style="font-size:13px;font-weight:700;margin-bottom:4px">${esc(r.name||'Без названия')}</div>
       <div style="font-size:11px;color:var(--muted)">Клиент: ${esc(getCName(r.clientId))}</div>
       <div style="font-size:11px;color:var(--muted)">Этап: ${STAGES[r.stage]||'—'}</div>
-      ${currentUser.canSeeMoney&&r.price?`<div style="font-size:11px;color:var(--accent2);margin-top:4px">${mdl(r.price)}</div>`:''}
+      ${r.price?`<div style="font-size:11px;color:var(--accent2);margin-top:4px">${mdl(r.price)}</div>`:''}
       <div class="tactions">
         <button class="btn-restore" onclick="restoreReel('${id}')">↩️ Восстановить</button>
         ${currentUser.canDelete?`<button class="btn-pdel" onclick="permDel('${id}')">✕ Навсегда</button>`:''}
@@ -822,75 +625,21 @@ function renderTrash(){
   });
 }
 
-window.restoreReel=async function(id){ const r=trash[id];if(!r)return; await window._fbSet('reels/'+id,{...r,deleted:false}); await window._fbDel('trash/'+id); toast('↩️ Восстановлено'); };
-window.permDel=async function(id){ if(confirm('Удалить навсегда?')){ await window._fbDel('trash/'+id); toast('Удалено навсегда'); } };
-window.emptyTrash=async function(){ if(confirm('Очистить всю корзину?')){ await window._fbSet('trash',{}); toast('Корзина очищена'); } };
+window.restoreReel=async function(id){const r=trash[id];if(!r)return;await fbSet('reels/'+id,{...r,deleted:false});await fbDel('trash/'+id);toast('↩️ Восстановлено');};
+window.permDel=async function(id){if(confirm('Удалить навсегда?')){await fbDel('trash/'+id);toast('Удалено навсегда');}};
+window.emptyTrash=async function(){if(confirm('Очистить всю корзину?')){await fbSet('trash',{});toast('Корзина очищена');}};
 
-// ══ NOTIFS ══
 function updateNotifs(){
   const notifs=[];
   reelsArr().filter(r=>!r.deleted&&r.stage<6).forEach(r=>{
-    if(!currentUser.seeAll&&r.owner!==currentUser.name)return;
-    if(r.deadline){
-      const d=diffDays(r.deadline);
-      if(d<0)notifs.push({name:r.name,msg:'🚨 Просрочен дедлайн',urg:true});
-      else if(d<1)notifs.push({name:r.name,msg:'🔴 Дедлайн завтра!',urg:true});
-      else if(d<2)notifs.push({name:r.name,msg:`🟡 Дедлайн через ${Math.ceil(d)} дн.`,urg:false});
-    }
-    (r.tasks||[]).filter(t=>!t.done&&t.due).forEach(t=>{ if(diffDays(t.due)<0)notifs.push({name:r.name,msg:'Задача просрочена: '+t.text,urg:true}); });
+    if(r.deadline){const d=(new Date(r.deadline)-new Date())/86400000;if(d<0)notifs.push({name:r.name,msg:'Просрочен дедлайн',urg:true});else if(d<1)notifs.push({name:r.name,msg:'Дедлайн завтра!',urg:false});}
+    (r.tasks||[]).filter(t=>!t.done&&t.due).forEach(t=>{const d=(new Date(t.due)-new Date())/86400000;if(d<0)notifs.push({name:r.name,msg:'Задача просрочена: '+t.text,urg:true});});
   });
   document.getElementById('nlist').innerHTML=!notifs.length?'<div style="color:var(--muted);font-size:11px;text-align:center;padding:14px">Всё в порядке 🎉</div>':
     notifs.map(n=>`<div class="nitem${n.urg?' urg':''}"><div class="nname">${esc(n.name)}</div><div class="nmsg">${n.msg}</div></div>`).join('');
   document.getElementById('ndot').style.display=notifs.some(n=>n.urg)?'block':'none';
 }
 
-// ══ DEADLINE CHECKER (Telegram) ══
-function checkDeadlines(){
-  reelsArr().filter(r=>!r.deleted&&r.deadline&&r.stage<6).forEach(r=>{
-    const d=diffDays(r.deadline);
-    const k1='tg_y_'+r.id+'_'+r.deadline, k2='tg_r_'+r.id+'_'+r.deadline, k3='tg_o_'+r.id+'_'+r.deadline;
-    if(d>=1&&d<2&&!localStorage.getItem(k1)){ localStorage.setItem(k1,'1'); sendTG(`🟡 <b>Дедлайн послезавтра!</b>\n\nРилс: <b>${r.name}</b>\nКлиент: ${getCName(r.clientId)}\nДедлайн: ${fmtDate(r.deadline)}`); }
-    if(d>=0&&d<1&&!localStorage.getItem(k2)){ localStorage.setItem(k2,'1'); sendTG(`🔴 <b>Дедлайн завтра!</b>\n\nРилс: <b>${r.name}</b>\nКлиент: ${getCName(r.clientId)}\nДедлайн: ${fmtDate(r.deadline)}`); }
-    if(d<0&&!localStorage.getItem(k3)){ localStorage.setItem(k3,'1'); sendTG(`🚨 <b>Просрочен дедлайн!</b>\n\nРилс: <b>${r.name}</b>\nКлиент: ${getCName(r.clientId)}`); }
-  });
-}
-
-// ══ ANALYTICS ══
-window.openAnalytics=function(){
-  const arr=reelsArr().filter(r=>!r.deleted);
-  const inW=arr.filter(r=>r.stage<6).reduce((a,r)=>a+(+r.price||0),0);
-  const earned=arr.filter(r=>r.stage===6).reduce((a,r)=>a+(+r.price||0),0);
-  document.getElementById('an-grid').innerHTML=`
-    <div class="an-card"><div class="an-num" style="color:var(--accent3)">${earned.toLocaleString()} MDL</div><div class="an-lbl">Заработано</div></div>
-    <div class="an-card"><div class="an-num" style="color:var(--accent2)">${inW.toLocaleString()} MDL</div><div class="an-lbl">В работе</div></div>
-    <div class="an-card"><div class="an-num" style="color:#a855f7">${arr.length}</div><div class="an-lbl">Всего рилсов</div></div>
-    <div class="an-card"><div class="an-num" style="color:var(--accent)">${arr.filter(r=>r.deadline&&diffDays(r.deadline)<0&&r.stage<6).length}</div><div class="an-lbl">Просрочено</div></div>`;
-  const byMonth={};
-  arr.filter(r=>r.stage===6&&r.updatedAt).forEach(r=>{
-    const d=new Date(r.updatedAt);
-    const key=`${d.getFullYear()}-${d.getMonth()}`;
-    if(!byMonth[key])byMonth[key]={label:MONTHS[d.getMonth()]+' '+d.getFullYear(),amt:0};
-    byMonth[key].amt+=(+r.price||0);
-  });
-  const months=Object.values(byMonth).slice(-6);
-  const max=Math.max(...months.map(m=>m.amt),1);
-  document.getElementById('an-months').innerHTML=!months.length?'<div style="color:var(--muted);font-size:12px;text-align:center;padding:16px">Нет данных</div>':
-    months.map(m=>`<div class="month-row"><span class="month-name">${m.label}</span><div class="month-bar-wrap"><div class="month-bar" style="width:${Math.round(m.amt/max*100)}%"></div></div><span class="month-amt">${m.amt.toLocaleString()}</span></div>`).join('');
-  document.getElementById('an-ov').classList.add('open');
-};
-
-// ══ EXPORT CSV ══
-window.exportCSV=function(){
-  const arr=reelsArr().filter(r=>!r.deleted);
-  const rows=[['Рилс','Клиент','Этап','Ответственный','Стоимость MDL','Дедлайн','Дата съёмки']];
-  arr.forEach(r=>rows.push([r.name||'',getCName(r.clientId),STAGES[r.stage]||'',r.owner||'',r.price||'',r.deadline?fmtDate(r.deadline):'',r.shootDate?fmtDate(r.shootDate):'']));
-  const csv=rows.map(r=>r.map(c=>`"${String(c).replace(/"/g,'""')}"`).join(',')).join('\n');
-  const a=document.createElement('a');a.href=URL.createObjectURL(new Blob(['\uFEFF'+csv],{type:'text/csv;charset=utf-8'}));
-  a.download=`KAI_CRM_${new Date().toISOString().slice(0,10)}.csv`;a.click();
-  toast('📤 Экспорт готов!');
-};
-
-// ══ REEL MODAL ══
 window.openNewReel=function(cId){
   editRId=null;presetCId=cId||null;
   document.getElementById('r-title').textContent='Новый рилс';
@@ -937,9 +686,7 @@ function clearReelForm(){
 function fillClientSelect(selId){
   const sel=document.getElementById('r-client');
   sel.innerHTML='<option value="">— Выберите клиента —</option>';
-  let arr=clientsArr();
-  if(!currentUser.seeAll)arr=arr.filter(c=>reelsArr().some(r=>r.clientId===c.id&&r.owner===currentUser.name));
-  arr.forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;if(c.id===selId)o.selected=true;sel.appendChild(o);});
+  clientsArr().forEach(c=>{const o=document.createElement('option');o.value=c.id;o.textContent=c.name;if(c.id===selId)o.selected=true;sel.appendChild(o);});
   sel.onchange=updateReelFinPreview;
   if(selId){sel.value=selId;updateReelFinPreview();}
 }
@@ -963,37 +710,36 @@ window.saveReel=async function(){
   const clientId=document.getElementById('r-client').value;
   const newStage=+document.getElementById('r-stage').value;
   const oldStage=editRId?(reels[editRId]?.stage??null):null;
-  const data={name,clientId,stage:newStage,owner:document.getElementById('r-owner').value,shootDate:document.getElementById('r-shoot').value,deadline:document.getElementById('r-deadline').value,price:currentUser.canSeeMoney?document.getElementById('r-price').value:(editRId?reels[editRId]?.price||'':''),idea:document.getElementById('r-idea').value,script:document.getElementById('r-script').value,notes:document.getElementById('r-notes').value,tasks:tempTasks,updatedBy:currentUser.name,updatedAt:Date.now()};
+  const data={name,clientId,stage:newStage,owner:document.getElementById('r-owner').value,shootDate:document.getElementById('r-shoot').value,deadline:document.getElementById('r-deadline').value,price:document.getElementById('r-price').value,idea:document.getElementById('r-idea').value,script:document.getElementById('r-script').value,notes:document.getElementById('r-notes').value,tasks:tempTasks,updatedBy:curUser,updatedAt:Date.now()};
   const id=editRId||('rl_'+Date.now());
   const isNew=!editRId;
-  await window._fbSet('reels/'+id,data);
+  await fbSet('reels/'+id,data);
   const cname=getCName(clientId);
-  if(isNew)sendTG(`🆕 <b>Новый рилс!</b>\n\nРилс: <b>${name}</b>\nКлиент: ${cname}\nЭтап: ${STAGES[newStage]}\nОтв: ${data.owner}\nДобавил: ${currentUser.name}`);
-  else if(oldStage!==null&&oldStage!==newStage){sendTG(`🔄 <b>Рилс перемещён</b>\n\n${name}\n${STAGES[oldStage]} → ${STAGES[newStage]}\nПеревёл: ${currentUser.name}`);if(newStage===6&&data.price)sendTG(`✅ <b>Принято!</b>\n\n${name}\nКлиент: ${cname}\nСписано: ${mdl(data.price)}`);}
+  if(isNew)sendTG(`🆕 <b>Новый рилс!</b>\n\nРилс: <b>${name}</b>\nКлиент: ${cname}\nЭтап: ${STAGES[newStage]}\nОтв: ${data.owner}\nДобавил: ${curUser}`);
+  else if(oldStage!==null&&oldStage!==newStage){sendTG(`🔄 <b>Рилс перемещён</b>\n\n${name}\n${STAGES[oldStage]} → ${STAGES[newStage]}\nПеревёл: ${curUser}`);if(newStage===6&&data.price)sendTG(`✅ <b>Принято!</b>\n\n${name}\nКлиент: ${cname}\nСписано: ${mdl(data.price)}`);}
   closeReel();toast(isNew?'✅ Рилс добавлен':'✅ Сохранено');
 };
 
 window.deleteReel=async function(){
   if(!editRId||!currentUser.canDelete)return;
   const r=reels[editRId];
-  await window._fbSet('trash/'+editRId,{...r,deletedAt:Date.now()});
-  await window._fbDel('reels/'+editRId);
+  await fbSet('trash/'+editRId,{...r,deletedAt:Date.now()});
+  await fbDel('reels/'+editRId);
   closeReel();toast('🗑 Перемещено в корзину');
 };
 
 window.closeReel=function(){document.getElementById('rov').classList.remove('open');};
 window.closeReelOuter=function(e){if(e.target===document.getElementById('rov'))closeReel();};
 
-// ══ TASKS ══
 function renderTasks(){
   const list=document.getElementById('r-tasks-list');
   if(!tempTasks.length){list.innerHTML='<div style="color:var(--muted);font-size:12px;padding:8px 0">Задач пока нет</div>';return;}
   list.innerHTML='';
   tempTasks.forEach((t,i)=>{
-    const od=t.due&&diffDays(t.due)<0;
+    const dc=t.due?dueClass(t.due):'';
     const div=document.createElement('div');div.className='task-item';
     div.innerHTML=`<input type="checkbox" class="tcheck" ${t.done?'checked':''} onchange="toggleTask(${i})">
-      <div class="tinfo"><div class="ttxt${t.done?' done':''}">${esc(t.text)}</div><div class="tmeta${od?' od':''}">👤 ${t.owner||'—'}${t.due?' · 📅 '+fmtDate(t.due):''}</div></div>
+      <div class="tinfo"><div class="ttxt${t.done?' done':''}">${esc(t.text)}</div><div class="tmeta${dc==='od'?' od':''}">👤 ${t.owner||'—'}${t.due?' · 📅 '+fmtDate(t.due):''}</div></div>
       <button onclick="removeTask(${i})" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:14px;padding:2px 4px;">✕</button>`;
     list.appendChild(div);
   });
@@ -1007,10 +753,9 @@ window.addTask=function(){
   tempTasks.push({id:'t_'+Date.now(),text,owner,due,done:false});
   renderTasks();document.getElementById('nt-text').value='';document.getElementById('nt-due').value='';
   document.getElementById('atf').classList.remove('open');
-  if(owner!==currentUser.name)sendTG(`📋 <b>Новая задача!</b>\n\n${text}\nОтв: ${owner}${due?'\nСрок: '+fmtDate(due):''}\nОт: ${currentUser.name}`);
+  if(owner&&owner!==curUser)sendTG(`📋 <b>Новая задача!</b>\n\n${text}\nОтв: ${owner}${due?'\nСрок: '+fmtDate(due):''}\nОт: ${curUser}`);
 };
 
-// ══ CLIENT MODAL ══
 window.openNewClient=function(){
   editCId=null;document.getElementById('c-title').textContent='Новый клиент';
   document.getElementById('c-del-btn').style.display='none';
@@ -1020,15 +765,15 @@ window.openNewClient=function(){
 window.openEditClient=function(id){
   const c=clients[id];if(!c)return;
   editCId=id;document.getElementById('c-title').textContent=c.name||'Клиент';
-  document.getElementById('c-del-btn').style.display=currentUser.canDelete?'':'none';
+  document.getElementById('c-del-btn').style.display='';
   document.getElementById('c-name').value=c.name||'';document.getElementById('c-phone').value=c.phone||'';
   document.getElementById('c-ig').value=c.ig||'';document.getElementById('c-notes').value=c.notes||'';
   document.getElementById('c-budget').value=c.budget||'';document.getElementById('c-advance').value=c.advance||'';
-  document.getElementById('cb-fin').style.display=currentUser.canSeeMoney?'':'none';
   updateClientFinPreview();renderClientReels(id);
   switchTabDirect('client','info');document.getElementById('cov').classList.add('open');
 };
-function clearClientForm(){ ['c-name','c-phone','c-ig','c-notes','c-budget','c-advance'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';}); updateClientFinPreview(); }
+
+function clearClientForm(){['c-name','c-phone','c-ig','c-notes','c-budget','c-advance'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});updateClientFinPreview();}
 
 function renderClientReels(cid){
   const list=document.getElementById('c-reels-list');
@@ -1037,14 +782,13 @@ function renderClientReels(cid){
   list.innerHTML='';
   cr.forEach(r=>{
     const el=document.createElement('div');el.style.cssText='display:flex;align-items:center;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--border);';
-    el.innerHTML=`<div><div style="font-size:12px;font-weight:600">${esc(r.name||'Без названия')}</div><div style="font-size:10px;color:var(--muted);margin-top:2px">${STAGES[r.stage]||'—'}${currentUser.canSeeMoney&&r.price?' · '+mdl(r.price):''}</div></div>
+    el.innerHTML=`<div><div style="font-size:12px;font-weight:600">${esc(r.name||'Без названия')}</div><div style="font-size:10px;color:var(--muted);margin-top:2px">${STAGES[r.stage]||'—'}${r.price?' · '+mdl(r.price):''}</div></div>
       <button onclick="closeClient();openEditReel('${r.id}')" style="background:var(--tag);border:1px solid var(--border);color:var(--muted);border-radius:6px;padding:4px 10px;font-size:10px;cursor:pointer;font-family:'DM Sans',sans-serif">Открыть</button>`;
     list.appendChild(el);
   });
 }
 
 window.updateClientFinPreview=function(){
-  if(!currentUser?.canSeeMoney)return;
   const budget=+document.getElementById('c-budget').value||0;const advance=+document.getElementById('c-advance').value||0;
   const spent=editCId?clientSpent(editCId):0;const advLeft=advance-spent;const remain=budget-advance;
   document.getElementById('cfp-budget').textContent=mdl(budget);document.getElementById('cfp-advance').textContent=mdl(advance);
@@ -1056,20 +800,19 @@ window.saveClient=async function(){
   const name=document.getElementById('c-name').value.trim();if(!name){alert('Введите название!');return;}
   const data={name,phone:document.getElementById('c-phone').value,ig:document.getElementById('c-ig').value,notes:document.getElementById('c-notes').value,budget:document.getElementById('c-budget').value,advance:document.getElementById('c-advance').value,updatedAt:Date.now()};
   const id=editCId||('cl_'+Date.now());
-  await window._fbSet('clients/'+id,data);
+  await fbSet('clients/'+id,data);
   closeClient();toast(editCId?'✅ Клиент обновлён':'✅ Клиент добавлен');
 };
 window.deleteClient=async function(){
-  if(!editCId||!currentUser.canDelete)return;
-  if(!confirm('Удалить клиента? Рилсы останутся.'))return;
-  await window._fbDel('clients/'+editCId);closeClient();toast('Клиент удалён');
+  if(!editCId)return;if(!confirm('Удалить клиента? Рилсы останутся.'))return;
+  await fbDel('clients/'+editCId);closeClient();toast('Клиент удалён');
 };
 window.closeClient=function(){document.getElementById('cov').classList.remove('open');};
 window.closeClientOuter=function(e){if(e.target===document.getElementById('cov'))closeClient();};
 
 window.filterReels=function(q){rSearch=q.toLowerCase();renderKanban();};
 window.filterClients=function(q){cSearch=q.toLowerCase();renderClients();};
-window.filterMemberFn=function(m,el){document.querySelectorAll('.btn-o').forEach(b=>b.classList.remove('active'));el.classList.add('active');fMember=m;renderKanban();};
+window.filterMember=function(m,el){document.querySelectorAll('.btn-o').forEach(b=>b.classList.remove('active'));el.classList.add('active');fMember=m;renderKanban();};
 
 function switchTabDirect(modal,name){
   const rp=modal==='reel'?'rt-':'ct-';const rb=modal==='reel'?'rb-':'cb-';
@@ -1079,7 +822,6 @@ function switchTabDirect(modal,name){
   document.getElementById(rb+name).classList.add('active');
 }
 
-// ══ DRAG & DROP ══
 function addDrag(el){
   el.addEventListener('touchstart',e=>startDrag(el,e.touches[0].clientX,e.touches[0].clientY,e),{passive:false});
   el.addEventListener('mousedown',e=>{if(e.button!==0)return;startDrag(el,e.clientX,e.clientY,e);});
@@ -1098,13 +840,27 @@ async function endDrag(cx,cy){
   document.querySelectorAll('.rcard').forEach(c=>c.classList.remove('dragging'));
   if(!wasDrag||!dragId){dragId=null;setTimeout(()=>wasDrag=false,50);return;}
   const el=document.elementFromPoint(cx,cy);const col=el&&el.closest('.kcol');
-  if(col){const idx=[...document.querySelectorAll('.kcol')].indexOf(col);if(idx>=0&&idx!==+dragOrig){const r=reels[dragId];if(r){await window._fbSet('reels/'+dragId,{...r,stage:idx,updatedBy:currentUser.name,updatedAt:Date.now()});sendTG(`🔄 ${r.name}: ${STAGES[+dragOrig]} → ${STAGES[idx]} (${currentUser.name})`);if(idx===6&&r.price)sendTG(`✅ Принято! ${r.name} · ${getCName(r.clientId)} · ${mdl(r.price)}`);toast('→ '+STAGES[idx]);}}}
+  if(col){const idx=[...document.querySelectorAll('.kcol')].indexOf(col);if(idx>=0&&idx!==+dragOrig){const r=reels[dragId];if(r){await fbSet('reels/'+dragId,{...r,stage:idx,updatedBy:curUser,updatedAt:Date.now()});sendTG(`🔄 ${r.name}: ${STAGES[+dragOrig]} → ${STAGES[idx]} (${curUser})`);if(idx===6&&r.price)sendTG(`✅ Принято! ${r.name} · ${getCName(r.clientId)} · ${mdl(r.price)}`);toast('→ '+STAGES[idx]);}}}
   dragId=null;setTimeout(()=>wasDrag=false,50);
 }
 
 function toast(msg){let t=document.getElementById('toast');if(!t){t=document.createElement('div');t.id='toast';t.style.cssText='position:fixed;bottom:22px;left:50%;transform:translateX(-50%);background:#1a1a28;border:1px solid var(--border2);color:var(--text);padding:9px 20px;border-radius:30px;font-size:12px;font-weight:600;z-index:9999;transition:opacity .3s;box-shadow:0 10px 35px rgba(0,0,0,.5);white-space:nowrap;';document.body.appendChild(t);}t.textContent=msg;t.style.opacity='1';clearTimeout(t._to);t._to=setTimeout(()=>t.style.opacity='0',2200);}
 
-document.addEventListener('click',e=>{const p=document.getElementById('npanel'),b=document.getElementById('notif-btn');if(p&&b&&!p.contains(e.target)&&!b.contains(e.target))p.classList.remove('open');});
+function checkDeadlines(){
+  reelsArr().filter(r=>!r.deleted&&r.deadline&&r.stage<6).forEach(r=>{
+    const diff=(new Date(r.deadline)-new Date())/86400000;
+    const k1='notif_'+r.id+'_1d',k2='notif_'+r.id+'_od';
+    if(diff>=0&&diff<1&&!localStorage.getItem(k1)){localStorage.setItem(k1,'1');sendTG(`⏰ <b>Дедлайн завтра!</b>\n\nРилс: <b>${r.name}</b>\nКлиент: ${getCName(r.clientId)}\nДедлайн: ${fmtDate(r.deadline)}`);}
+    if(diff<0&&!localStorage.getItem(k2)){localStorage.setItem(k2,'1');sendTG(`🔴 <b>Просрочен дедлайн!</b>\n\nРилс: <b>${r.name}</b>\nКлиент: ${getCName(r.clientId)}`);}
+  });
+}
+setInterval(checkDeadlines,3600000);
+setTimeout(checkDeadlines,5000);
+
+document.addEventListener('click',e=>{
+  const p=document.getElementById('npanel'),b=document.getElementById('notif-btn');
+  if(!p.contains(e.target)&&!b.contains(e.target))p.classList.remove('open');
+});
 </script>
 
 </body>
