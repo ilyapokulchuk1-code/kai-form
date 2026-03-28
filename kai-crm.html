@@ -5,7 +5,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>KAI CRM</title>
-<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
 <style>
 :root{
   --bg:#07070d;--surface:#0f0f18;--card:#161622;--card2:#1c1c2a;
@@ -278,6 +278,21 @@ select option{background:var(–card);}
       <button class="ntab" onclick="showPage('p-clients',this)">👥 Клиенты</button>
       <button class="ntab" onclick="showPage('p-trash',this)">🗑 Корзина</button>
     </div>
+    <div class="numpad" id="numpad">
+      <button class="num-btn" onclick="pinPress('1')">1</button>
+      <button class="num-btn" onclick="pinPress('2')">2</button>
+      <button class="num-btn" onclick="pinPress('3')">3</button>
+      <button class="num-btn" onclick="pinPress('4')">4</button>
+      <button class="num-btn" onclick="pinPress('5')">5</button>
+      <button class="num-btn" onclick="pinPress('6')">6</button>
+      <button class="num-btn" onclick="pinPress('7')">7</button>
+      <button class="num-btn" onclick="pinPress('8')">8</button>
+      <button class="num-btn" onclick="pinPress('9')">9</button>
+      <button class="num-btn zero" onclick="pinPress('0')">0</button>
+      <button class="num-btn del" onclick="pinDel()">⌫</button>
+    </div>
+    <div class="login-err" id="login-err"></div>
+    <div class="blocked-timer" id="blocked-timer"></div>
   </div>
   <div class="nav-right">
     <div class="sync"><div class="sdot loading" id="sdot"></div><span id="slabel" style="font-size:10px">...</span></div>
@@ -340,11 +355,15 @@ select option{background:var(–card);}
 <div class="page" id="p-clients" style="display:none">
 <div class="wrap">
   <div class="toolbar">
-    <button class="btn-p" onclick="openNewClient()">+ Новый клиент</button>
-    <input class="sbox" placeholder="🔍 Поиск клиента..." oninput="filterClients(this.value)">
+    <button class="btn-primary" onclick="openNew()">+ Новый клиент</button>
+    <input class="search-box" placeholder="🔍 Поиск..." oninput="filterCards(this.value)">
+    <button class="filter-btn active" onclick="filterMemberFn(null,this)">Все</button>
+    <button class="filter-btn" onclick="filterMemberFn('Илья',this)">Илья</button>
+    <button class="filter-btn" onclick="filterMemberFn('Ян',this)">Ян</button>
+    <button class="filter-btn" onclick="filterMemberFn('Влад',this)">Влад</button>
+    <button class="filter-btn" onclick="filterMemberFn('Элвин',this)">Элвин</button>
   </div>
-  <div class="cgrid" id="cgrid"></div>
-</div>
+  <div class="kanban" id="kanban"></div>
 </div>
 
 <!-- ═══ PAGE: TRASH ═══ -->
@@ -363,13 +382,12 @@ select option{background:var(–card);}
 
 <div class="overlay" id="rov" onclick="closeReelOuter(event)">
 <div class="modal">
-  <button class="close-btn" onclick="closeReel()">✕</button>
-  <div class="modal-title" id="r-title">Новый рилс</div>
-  <div class="mtabs">
-    <button class="tbtn active" id="rb-info" onclick="switchTab('reel','info',this)">📋 Основное</button>
-    <button class="tbtn" id="rb-fin" onclick="switchTab('reel','fin',this)">💰 Финансы</button>
-    <button class="tbtn" id="rb-tasks" onclick="switchTab('reel','tasks',this)">✅ Задачи</button>
-    <button class="tbtn" id="rb-notes" onclick="switchTab('reel','notes',this)">📝 Заметки</button>
+  <button class="close-btn" onclick="closeModalBtn()">✕</button>
+  <div class="modal-title" id="modal-heading">Новый клиент</div>
+  <div class="modal-tabs">
+    <button class="tab-btn active" id="tab-btn-info" onclick="switchTab('info',this)">📋 Инфо</button>
+    <button class="tab-btn" id="tab-btn-reels" onclick="switchTab('reels',this)">🎬 Рилсы</button>
+    <button class="tab-btn" id="tab-btn-notes" onclick="switchTab('notes',this)">📝 Заметки</button>
   </div>
   <div class="tpane active" id="rt-info">
     <div class="fgrid">
@@ -401,13 +419,6 @@ select option{background:var(–card);}
         <div style="font-size:10px;color:var(--muted);margin-top:5px;">При переходе в «Принято» — эта сумма спишется с аванса клиента автоматически.</div>
       </div>
     </div>
-    <div class="fsummary" id="rfp" style="margin-top:12px;display:none;">
-      <div class="fsrow"><span class="fsl">Бюджет проекта</span><span class="fsv" id="rfp-budget">—</span></div>
-      <div class="fsrow"><span class="fsl">Аванс клиента</span><span class="fsv y" id="rfp-advance">—</span></div>
-      <hr class="fsdiv">
-      <div class="fsrow"><span class="fsl">Уже списано</span><span class="fsv r" id="rfp-spent">—</span></div>
-      <div class="fsrow"><span class="fsl">Остаток аванса</span><span class="fsv g" id="rfp-left">—</span></div>
-    </div>
   </div>
   <div class="tpane" id="rt-tasks">
     <div id="r-tasks-list"></div>
@@ -425,6 +436,8 @@ select option{background:var(–card);}
         <button class="btn-s" onclick="toggleATF()" style="font-size:11px;padding:6px 12px;">Отмена</button>
       </div>
     </div>
+    <div id="reels-list"></div>
+    <div id="reels-empty" style="text-align:center;padding:32px;color:var(--muted);font-size:13px;">Нажмите "+ Добавить рилс" 🎥</div>
   </div>
   <div class="tpane" id="rt-notes">
     <div class="fgrid">
@@ -711,7 +724,7 @@ window.switchTab=function(modal,name,el){
 // ══ RENDER ══
 function renderAll(){ renderKanban(); renderClients(); renderFinBar(); updateNotifs(); }
 
-function renderKanban(){
+function render(){
   const kb=document.getElementById('kanban'); kb.innerHTML='';
   let arr=reelsArr().filter(r=>!r.deleted);
   if(!currentUser.seeAll) arr=arr.filter(r=>r.owner===currentUser.name);
@@ -747,6 +760,7 @@ function renderKanban(){
       addDrag(el); body.appendChild(el);
     });
   });
+  updateStats(); updateNotifs();
 }
 
 function renderFinBar(){
@@ -1067,8 +1081,8 @@ function switchTabDirect(modal,name){
 
 // ══ DRAG & DROP ══
 function addDrag(el){
-  el.addEventListener('touchstart',onTS,{passive:false});
-  el.addEventListener('mousedown',onMD);
+  el.addEventListener('touchstart',e=>startDrag(el,e.touches[0].clientX,e.touches[0].clientY,e),{passive:false});
+  el.addEventListener('mousedown',e=>{if(e.button!==0)return;startDrag(el,e.clientX,e.clientY,e);});
 }
 function onTS(e){if(e.touches.length>1)return;const t=e.touches[0];startDrag(e.currentTarget,t.clientX,t.clientY,e);document.addEventListener('touchmove',onTM,{passive:false});document.addEventListener('touchend',onTE);}
 function onMD(e){if(e.button!==0)return;startDrag(e.currentTarget,e.clientX,e.clientY,e);document.addEventListener('mousemove',onMM);document.addEventListener('mouseup',onMU);}
