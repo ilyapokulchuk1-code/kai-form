@@ -432,11 +432,13 @@ select option{background:var(--card);}
 <script>
 // ══ ПОЛЬЗОВАТЕЛИ И PIN ══
 const USERS={
-  '1441':{name:'Илья',display:'Я',user:'Я (Автор)'},
-  '2811':{name:'Ян',display:'Ян',user:'Ян'},
-  '8282':{name:'Влад',display:'Влад',user:'Влад'},
-  '1010':{name:'Элвин',display:'Элвин',user:'Элвин'},
+  '1441':{name:'Илья',display:'Я',user:'Я (Автор)',seeAll:true,canSeeMoney:true,canDelete:true},
+  '2811':{name:'Ян',display:'Ян',user:'Ян',seeAll:true,canSeeMoney:true,canDelete:true},
+  '8282':{name:'Влад',display:'Влад',user:'Влад',seeAll:false,canSeeMoney:false,canDelete:false},
+  '1010':{name:'Элвин',display:'Элвин',user:'Элвин',seeAll:false,canSeeMoney:false,canDelete:false},
 };
+// Влад и Элвин видят друг друга — группа "team"
+const TEAM_GROUP=['Влад','Элвин'];
 const JOKES=[
   '🤡 Серьёзно? Ты не помнишь свой PIN?',
   '🕵️ Шпион? Думаешь мы не видим?',
@@ -554,7 +556,11 @@ function initFirebase(){
   async function fbDel(path){syncLoad();try{await DB.ref(path).remove();syncOk();}catch(e){console.error(e);}}
   window._fbSet=fbSet;window._fbDel=fbDel;
 
-  DB.ref('reels').on('value',s=>{reels=s.val()||{};renderAll();});
+  DB.ref('reels').on('value',s=>{reels=s.val()||{};  // Финансы — только Илья и Ян
+  const showMoney=currentUser.canSeeMoney;
+  document.getElementById('f-inwork').closest('.fbar').style.display=showMoney?'':'none';
+
+  renderAll();});
   DB.ref('clients').on('value',s=>{clients=s.val()||{};renderAll();});
   DB.ref('trash').on('value',s=>{trash=s.val()||{};renderTrash();});
   DB.ref('reels').once('value',()=>{
@@ -617,9 +623,19 @@ window.switchTab=function(modal,name,el){
 
 function renderAll(){renderKanban();renderClients();renderFinBar();updateNotifs();}
 
+function canSeeReel(r){
+  if(currentUser.seeAll)return true;
+  // Влад и Элвин видят рилсы где owner — Влад или Элвин
+  return TEAM_GROUP.includes(r.owner);
+}
+function canEditReel(r){
+  if(currentUser.seeAll)return true;
+  return r.owner===curUser;
+}
+
 function renderKanban(){
   const kb=document.getElementById('kanban');kb.innerHTML='';
-  let arr=reelsArr().filter(r=>!r.deleted);
+  let arr=reelsArr().filter(r=>!r.deleted&&canSeeReel(r));
   if(fMember)arr=arr.filter(r=>r.owner===fMember);
   if(rSearch)arr=arr.filter(r=>(r.name||'').toLowerCase().includes(rSearch)||(getCName(r.clientId)).toLowerCase().includes(rSearch));
   STAGES.forEach((s,si)=>{
@@ -664,17 +680,18 @@ function renderClients(){
     const spent=clientSpent(c.id);const advLeft=clientAdvLeft(c.id);
     const el=document.createElement('div');el.className='ccard';
     const chips=cr.length?`<div class="creelchips">${cr.map(r=>`<span class="rchip" style="border-left-color:${stageColor(r.stage)}" onclick="event.stopPropagation();openEditReel('${r.id}')">${esc(r.name||'Рилс')}</span>`).join('')}</div>`:'';
+    const finHtml=currentUser.canSeeMoney?`<div class="cfinrow">
+        <div class="cfin"><div class="cfinl">Бюджет</div><div class="cfinv">${mdl(c.budget)}</div></div>
+        <div class="cfin"><div class="cfinl">Аванс</div><div class="cfinv" style="color:var(--accent2)">${mdl(c.advance)}</div></div>
+        <div class="cfin"><div class="cfinl">Остаток</div><div class="cfinv" style="color:${advLeft<0?'var(--accent)':'var(--accent3)'}">${mdl(advLeft)}</div></div>
+      </div>`:'';
     el.innerHTML=`<div class="cname">${esc(c.name)}</div><div class="ccontact">${esc(c.phone||'')}${c.ig?' · '+esc(c.ig):''}</div>
       <div class="cstats">
         <div class="cstat"><div class="cstatv" style="color:#a855f7">${cr.length}</div><div class="cstatl">Рилсов</div></div>
         <div class="cstat"><div class="cstatv" style="color:var(--accent2)">${active.length}</div><div class="cstatl">В работе</div></div>
         <div class="cstat"><div class="cstatv" style="color:var(--accent3)">${done.length}</div><div class="cstatl">Принято</div></div>
       </div>
-      <div class="cfinrow">
-        <div class="cfin"><div class="cfinl">Бюджет</div><div class="cfinv">${mdl(c.budget)}</div></div>
-        <div class="cfin"><div class="cfinl">Аванс</div><div class="cfinv" style="color:var(--accent2)">${mdl(c.advance)}</div></div>
-        <div class="cfin"><div class="cfinl">Остаток</div><div class="cfinv" style="color:${advLeft<0?'var(--accent)':'var(--accent3)'}">${mdl(advLeft)}</div></div>
-      </div>${chips}`;
+      ${finHtml}${chips}`;
     el.onclick=()=>openEditClient(c.id);grid.appendChild(el);
   });
 }
